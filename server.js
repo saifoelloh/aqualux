@@ -21,11 +21,13 @@ app.use(methodOverride("_method"))
 
 // include router
 const biodataRouter = require("./routes/biodataRouter")
+const orderRouter = require("./routes/orderRouter")
 
 // routing
 app.use("/biodata", biodataRouter)
+app.use("/order", orderRouter)
 
 // starting server
-app.listen(3000, function() {
-  console.log("server listening on port 3000")
+app.listen(5000, function() {
+  console.log("server listening on port 5000")
 })
