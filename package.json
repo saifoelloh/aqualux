@@ -16,7 +16,5 @@
     "mysql": "^2.15.0",
     "pug": "^2.0.3"
   },
-  "devDependencies": {
-    "nodemon": "^1.17.4"
-  }
+  "devDependencies": {}
 }
