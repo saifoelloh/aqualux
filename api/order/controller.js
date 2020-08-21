@@ -1,4 +1,4 @@
-const { successResponses, errorResponses } = require('api-responses')
+const { successResponses, errorResponses } = require('../../responses')
 const order = require('./model')
 
 module.exports = {
