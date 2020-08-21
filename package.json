@@ -1,5 +1,5 @@
 {
-  "name": "express-mysql-crud",
+  "name": "aqualux-api",
   "version": "1.0.0",
   "description": "simple implementation of express and mysql",
   "main": "index.js",
@@ -7,8 +7,12 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "m. nindra zaka",
+  "author": "restu, saifoelloh",
   "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "api-responses"
+  ],
   "dependencies": {
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
@@ -16,5 +20,7 @@
     "mysql": "^2.15.0",
     "pug": "^2.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }

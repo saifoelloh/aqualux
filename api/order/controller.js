@@ -1,5 +1,5 @@
+const { successResponses, errorResponses } = require('api-responses')
 const order = require('./model')
-const { successResponses, errorResponses } = require('../../responses')
 
 module.exports = {
   index: function (req, res) {
