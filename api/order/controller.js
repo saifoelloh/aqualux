@@ -13,4 +13,13 @@ module.exports = {
   create: function (req, res) {
     res.json(successResponses.success(['selamat', 'anda', 'berhasil']))
   },
+
+  store: function(req, res) {
+    order.create(req.con, req.body, function(err){
+      const respon = err
+        ? errorResponses['bad request'](err)
+        : successResponses.successs(['horeee'])
+      res.json(respon)
+    })
+  }
 }
