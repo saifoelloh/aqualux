@@ -4,7 +4,9 @@ const controller = require('./controller')
 router
   .get('/', controller.index)
   .get('/create', controller.create)
-  .get('/:id', controller.index)
-  .get('/:id/edit', controller.edit);
+  // .get('/:id/edit', controller.edit)
+  .post('/', controller.store)
+  // .put('/:id', controller.update)
+  // .delete('/:id', controller.destroy)
 
 module.exports = router
