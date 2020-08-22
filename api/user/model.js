@@ -1,5 +1,4 @@
 var moment = require('moment')
-var now = moment().format('YYYY-MM-DD h:mm:ss')
 
 module.exports = {
   get: function (con, callback) {
@@ -11,6 +10,7 @@ module.exports = {
   },
 
   create: function (con, data, callback){
+    var now = moment().format('YYYY-MM-DD h:mm:ss')
     con.query(`
       INSERT INTO \`user\`
       SET nama='${data.nama}',
@@ -29,6 +29,7 @@ module.exports = {
   },
 
   update: function(con, data, id, callback) {
+    var now = moment().format('YYYY-MM-DD h:mm:ss')
     con.query(
      `UPDATE \`user\`
       SET nama='${data.nama}',
