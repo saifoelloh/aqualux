@@ -1,9 +1,9 @@
 const { successResponses, errorResponses } = require('../../responses')
-const order = require('./model')
+const user = require('./model')
 
 module.exports = {
   index: function (req, res) {
-    order.get(req.con, function (err, rows) {
+    user.get(req.con, function (err, rows) {
       const resp = err
         ? errorResponses['bad request'](err)
         : successResponses.success(rows)
@@ -16,7 +16,7 @@ module.exports = {
   },
 
   store: function(req, res) {
-    order.create(req.con, req.body, function(err){
+    user.create(req.con, req.body, function(err){
       const respon = err
         ? errorResponses['bad request'](err)
         : successResponses.created()
@@ -25,7 +25,7 @@ module.exports = {
   },
 
   destroy: function(req, res) {
-    order.destroy(req.con, req.params.id, function(err){
+    user.destroy(req.con, req.params.id, function(err){
       const respon = err
         ? errorResponses['bad request'](err)
         : successResponses.deleted()
@@ -34,7 +34,7 @@ module.exports = {
   },
 
   edit: function(req, res) {
-    order.getID(req.con, req.params.id, function(err, rows) {
+    user.getID(req.con, req.params.id, function(err, rows) {
       const respon = err
         ? errorResponses['bad request'](err)
         : successResponses.success(rows)
@@ -43,7 +43,7 @@ module.exports = {
   },
 
   update: function(req, res) {
-    order.update(req.con, req.body, req.params.id, function(err) {
+    user.update(req.con, req.body, req.params.id, function(err) {
       const respon = err
         ? errorResponses['bad request'](err)
         : successResponses.updated()
