@@ -16,5 +16,11 @@ module.exports = [
     code: 202,
     success: true,
     message: 'Success delete data',
-  }
+  },
+  {
+    name: 'updated',
+    code: 203,
+    success: true,
+    message: 'Success edit data',
+  },
 ]

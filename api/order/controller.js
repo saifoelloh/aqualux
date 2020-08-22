@@ -54,6 +54,22 @@ module.exports = {
     })
   },
 
-  
+  edit: function(req, res) {
+    order.getID(req.con, req.params.id, function(err, rows) {
+      const respon = err
+        ? errorResponses['bad request'](err)
+        : successResponses.success(rows)
+      res.json(respon)
+    })
+  },
+
+  update: function(req, res) {
+    order.update(req.con, req.body, req.params.id, function(err) {
+      const respon = err
+        ? errorResponses['bad request'](err)
+        : successResponses.updated()
+      res.json(respon)
+    })
+  }
 
 }
