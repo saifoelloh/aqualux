@@ -32,7 +32,7 @@ module.exports = {
           function(err){
             const respon = err
               ? errorResponses['bad request'](err)
-              : successResponses.success(["berhasil menambahkan data"])
+              : successResponses.created()
             res.json(respon)
           }
     );
