@@ -19,10 +19,12 @@ app.use(methodOverride('_method'))
 // include router
 const apiOrder = require('./api/order/route')
 const apiUser = require('./api/user/route')
+const apiPackage = require('./api/package/route')
 
 // routing
 app.use('/order', apiOrder)
 app.use('/user', apiUser)
+app.use('/package', apiPackage)
 
 // starting server
 const port = process.env.PORT || 3000
