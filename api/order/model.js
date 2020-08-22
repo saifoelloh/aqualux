@@ -1,3 +1,6 @@
+var moment = require('moment')
+var now = moment().format('YYYY-MM-DD h:mm:ss')
+
 module.exports = {
   get: function (con, callback) {
     con.query('SELECT * FROM `order`', callback)
@@ -18,8 +21,8 @@ module.exports = {
           jenis_marketing='${data.jenis_marketing}',
           jenis_pembayaran='${data.jenis_pembayaran}',
           tanggal='${data.tanggal}',
-          created_at='${data.created_at}',
-          updated_at='${data.updated_at}'`,
+          created_at='${now}',
+          updated_at='${now}'`,
       callback
     )
   },
@@ -30,7 +33,7 @@ module.exports = {
 
   update: function(con, data, id, callback) {
     con.query(
-      `UPDATE \`order\`
+     `UPDATE \`order\`
       SET customer_id='${data.customer_id}',
           branch_id='${data.branch_id}',
           user_id='${data.user_id}',
@@ -39,9 +42,8 @@ module.exports = {
           jenis_marketing='${data.jenis_marketing}',
           jenis_pembayaran='${data.jenis_pembayaran}',
           tanggal='${data.tanggal}',
-          created_at='${data.created_at}',
-          updated_at='${data.updated_at}'
-          WHERE id='${id}'`,
+          updated_at='${now}'
+      WHERE id='${id}'`,
       callback
     )
   }
