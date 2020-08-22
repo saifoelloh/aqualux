@@ -5,18 +5,20 @@ module.exports = {
 
   create: function (con, data, callback){
     con.query(`
-      INSERT INTO order
-      SET customer_id='${data.custID}',
-          branch_id='${data.branchID}',
-          user_id='${data.userID}',
-          package_id='${data.packageID}',
+      INSERT INTO \`order\`
+      SET customer_id='${data.customer_id}',
+          branch_id='${data.branch_id}',
+          user_id='${data.user_id}',
+          package_id='${data.package_id}',
           kode='${data.kode}',
-          jenis_marketing='${data.jenisMarketing}',
-          jenis_pembayaran='${data.jenisPembayaran}',
-          tanggal='${data.tanggal}'`,
+          jenis_marketing='${data.jenis_marketing}',
+          jenis_pembayaran='${data.jenis_pembayaran}',
+          tanggal='${data.tanggal}',
+          created_at='${data.created_at}',
+          updated_at='${data.updated_at}'`,
       callback
     )
   },
 
-
+  
 }
