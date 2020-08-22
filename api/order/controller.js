@@ -45,5 +45,15 @@ module.exports = {
     })
   },
 
+  destroy: function(req, res) {
+    order.destroy(req.con, req.params.id, function(err){
+      const respon = err
+        ? errorResponses['bad request'](err)
+        : successResponses.deleted()
+      res.json(respon)
+    })
+  },
+
+  
 
 }

@@ -20,5 +20,7 @@ module.exports = {
     )
   },
 
-  
+  destroy: function(con, id, callback) {
+    con.query(`DELETE FROM \`order\` WHERE id=${id}`, callback)
+  },
 }

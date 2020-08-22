@@ -7,6 +7,6 @@ router
   // .get('/:id/edit', controller.edit)
   .post('/', controller.store)
   // .put('/:id', controller.update)
-  // .delete('/:id', controller.destroy)
+  .delete('/:id', controller.destroy)
 
 module.exports = router
