@@ -21,8 +21,8 @@ router
   .post('/realization', controller_realization.store)
   
   .put('/:id', controller.update)
-  .put('/:id', controller_note.update)
-  .put('/:id', controller_realization.update)
+  .put('/note/:id', controller_note.update)
+  .put('/realization/:id', controller_realization.update)
 
   .delete('/:id', controller.destroy)
   .delete('/note/:id', controller_note.destroy)
