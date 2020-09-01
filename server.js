@@ -3,7 +3,11 @@ const app = express()
 const methodOverride = require('method-override')
 const path = require('path')
 const con = require('./config/db.js')
+const cors = require('cors')
+
 require('dotenv').config()
+
+app.use(cors())
 
 // connecting route to database
 app.use(function (req, res, next) {
