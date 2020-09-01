@@ -21,7 +21,8 @@ const apiOrder = require('./api/order/route')
 const apiUser = require('./api/user/route')
 const apiPackage = require('./api/package/route')
 const apiCustomer = require('./api/customer/route')
-const apiBranch = require('.api/branch/route')
+const apiBranch = require('./api/branch/route')
+const apiShipping = require('./api/shipping/route')
 
 // routing
 app.use('/order', apiOrder)
@@ -29,6 +30,7 @@ app.use('/user', apiUser)
 app.use('/package', apiPackage)
 app.use('/customer', apiCustomer)
 app.use('/branch', apiBranch)
+app.use('/shipping', apiShipping)
 
 // starting server
 const port = process.env.PORT || 3000
