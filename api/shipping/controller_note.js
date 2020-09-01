@@ -1,5 +1,5 @@
 const { successResponses, errorResponses } = require('../../responses')
-const controller_note = require('./model')
+const controller_note = require('./model_note')
 
 module.exports = {
   index: function (req, res) {
