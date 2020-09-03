@@ -2,7 +2,7 @@ var moment = require('moment')
 
 module.exports = {
   get: function (con, callback) {
-    con.query('SELECT * FROM `order`', callback)
+    con.query('SELECT order.customer_id, customer.nama as nama_customer, order.branch_id, branch.nama as nama_branch, order.user_id, user.nama as nama_user, order.package_id, package.nama as nama_package, order.kode, order.jenis_marketing, order.jenis_pembayaran, order.tanggal, order.created_at, order.updated_at FROM `order` JOIN customer ON order.customer_id=customer.id JOIN branch ON order.branch_id=branch.id JOIN user ON order.user_id=user.id JOIN package ON order.package_id=package.id', callback)
   },
 
   getID: function (con, id, callback) {
