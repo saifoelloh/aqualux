@@ -11,20 +11,52 @@ module.exports = {
 
   create: function (con, data, callback){
     var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(`
-      INSERT INTO \`order\`
-      SET customer_id='${data.customer_id}',
-          branch_id='${data.branch_id}',
-          user_id='${data.user_id}',
-          package_id='${data.package_id}',
-          kode='${data.kode}',
-          jenis_marketing='${data.jenis_marketing}',
-          jenis_pembayaran='${data.jenis_pembayaran}',
-          tanggal='${data.tanggal}',
-          created_at='${now}',
-          updated_at='${now}'`,
-      callback
-    )
+    var tanggal = moment(data.tanggal).format('YYYYMMDD')
+    // ORD-001040920200001
+    // 001 => semisal cabang
+    // 04092020 => tanggal
+    // 0001 => total order per hari
+    var tes;
+    
+    con.query(`SELECT * FROM \`order\` WHERE tanggal=${tanggal}`, (err,rows) => {
+        if(err) throw err;
+        setValue(rows.length)
+      });
+    
+    function setValue(value) {
+      var cabang, total;
+      if(data.branch_id<10)
+        cabang = "00" + data.branch_id
+      else if(data.branch_id<100)
+        cabang = "0" + data.branch_id
+
+      tes = value;
+      tes++;
+
+      if(tes<10)
+        total = "000" + tes
+      else if(tes<100)
+        total = "00" + tes
+      else if(tes<1000)
+        total = "0" + tes
+
+      var text = "ORD-" + cabang + tanggal + total;
+
+      con.query(`
+        INSERT INTO \`order\`
+        SET customer_id='${data.customer_id}',
+            branch_id='${data.branch_id}',
+            user_id='${data.user_id}',
+            package_id='${data.package_id}',
+            kode='${text}',
+            jenis_marketing='${data.jenis_marketing}',
+            jenis_pembayaran='${data.jenis_pembayaran}',
+            tanggal='${data.tanggal}',
+            created_at='${now}',
+            updated_at='${now}'`,
+        callback
+      )
+    }
   },
 
   destroy: function(con, id, callback) {
