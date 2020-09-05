@@ -23,9 +23,9 @@ router
     check('jenis_pembayaran')
       .notEmpty().withMessage('data tidak boleh kosong')
   ], (req,res) => {
-    const errors = validationResult(req).array()
-    if (errors)
-      return res.status(400).json({ errors: errors })
+    const errors = validationResult(req)
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() })
     else
       controller.update(req,res)
   })
