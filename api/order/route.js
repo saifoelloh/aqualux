@@ -7,7 +7,7 @@ router
   .get('/create', controller.create)
   .get('/:id/edit', controller.edit)
   .delete('/:id', controller.destroy)
-  
+
   .post('/', [
     check('jenis_marketing').notEmpty().withMessage('data tidak boleh kosong'),
     check('jenis_pembayaran').notEmpty().withMessage('data tidak boleh kosong')
@@ -29,6 +29,5 @@ router
     else
       controller.update(req,res)
   })
-  
 
 module.exports = router
