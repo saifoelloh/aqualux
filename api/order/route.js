@@ -18,10 +18,8 @@ router
   })
 
   .put('/:id', [
-    check('jenis_marketing')
-      .notEmpty().withMessage('data tidak boleh kosong'),
-    check('jenis_pembayaran')
-      .notEmpty().withMessage('data tidak boleh kosong')
+    check('jenis_marketing').notEmpty().withMessage('data tidak boleh kosong'),
+    check('jenis_pembayaran').notEmpty().withMessage('data tidak boleh kosong')
   ], (req,res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty())
