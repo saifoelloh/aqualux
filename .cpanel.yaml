@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/systemaq/tes/
+    - export DEPLOYPATH=/home/systemaq/xxx/
     - /bin/cp -R * $DEPLOYPATH
