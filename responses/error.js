@@ -3,7 +3,7 @@ module.exports = [
     name: 'bad request',
     code: 400,
     success: false,
-    message: 'please check your request bro!',
+    message: 'request error',
   },
   {
     name: 'not found',
