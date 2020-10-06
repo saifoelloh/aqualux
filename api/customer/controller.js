@@ -1,54 +1,62 @@
-const { successResponses, errorResponses } = require('../../responses')
 const customer = require('./model')
+const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
-  index: function (req, res) {
-    customer.get(req.con, function (err, rows) {
-      const resp = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(resp)
-    })
+  getAll: async(req, res) => {
+    try{
+      const customers = await customer.findAll()
+      const data = pagination(customers, {...req.query})
+      return successResponses[200](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  create: function (req, res) {
-    res.json(successResponses.success(['selamat', 'anda', 'berhasil']))
+  create: async(req, res) => {
+    try{
+      const data = await customer.create({...req.body})
+      return successResponses[201](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  store: function(req, res) {
-    customer.create(req.con, req.body, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.created()
-      res.json(respon)
-    })
+  update: async(req, res) => {
+    try{
+      const data = await customer.update({...req.body},{
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[202](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  destroy: function(req, res) {
-    customer.destroy(req.con, req.params.id, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.deleted()
-      res.json(respon)
-    })
+  getById: async(req, res) => {
+    try{
+      const data = await customer.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[200](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  edit: function(req, res) {
-    customer.getID(req.con, req.params.id, function(err, rows) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(respon)
-    })
-  },
-
-  update: function(req, res) {
-    customer.update(req.con, req.body, req.params.id, function(err) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.updated()
-      res.json(respon)
-    })
+  delete: async(req, res) => {
+    try{
+      const data = await customer.destroy({
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[203](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message:err.message})
+    }
   }
-
 }
