@@ -5,7 +5,7 @@ const orders = require('../order/model')
 const customers = DatabaseConnection.define('customers', {
   nama: DataTypes.STRING,
   telepon: DataTypes.STRING,
-  address_id: DataTypes.STRING,
+  address_id: DataTypes.INTEGER,
   email: DataTypes.STRING,
 })
 
