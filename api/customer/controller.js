@@ -41,7 +41,11 @@ module.exports = {
           id: req.params.id
         }
       })
-      return successResponses[200](res, {data})
+      if(data!=null){
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }
@@ -49,6 +53,7 @@ module.exports = {
 
   delete: async(req, res) => {
     try{
+      res.send(this.getById(req, res))
       const data = await customer.destroy({
         where: {
           id: req.params.id
@@ -58,5 +63,5 @@ module.exports = {
     }catch(err){
       return errorResponses[400](res, {message:err.message})
     }
-  }
+  },
 }
