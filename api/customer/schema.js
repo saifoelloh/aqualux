@@ -1,8 +1,21 @@
 const Joi = require('joi')
 
-module.exports = Joi.object().keys({
-    nama: Joi.string().required(),
-    telepon: Joi.string().required(),
-    email: Joi.string().required(),
-    address_id: Joi.number().required(),
+const schema = Joi.object().keys({
+    nama: Joi.string()
+             .required(),
+    
+    telepon: Joi.string()
+                .alphanum()
+                .min(10)
+                .required(),
+    
+    email: Joi.string()
+              .email()
+              .required(),
+    
+    address_id: Joi.number()
+                   .integer() 
+                   .required(),
 })
+
+module.exports = schema
