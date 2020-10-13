@@ -11,6 +11,8 @@ const customerRouter = require('./api/customer')
 const orderRouter = require('./api/order')
 const branchRouter = require('./api/branch')
 const packageRouter = require('./api/package')
+const shippingRouter = require('./api/shipping')
+const order_confirmationRouter = require('./api/order_confirmation')
 
 require('dotenv').config()
 
@@ -31,6 +33,8 @@ app
   .use('/api/order', orderRouter)
   .use('/api/branch', branchRouter)
   .use('/api/package', packageRouter)
+  .use('/api/shipping', shippingRouter)
+  .use('/api/order_confirmation', order_confirmationRouter)
   .listen(APP_PORT, () =>
     console.log(`Your app listening to port ${APP_PORT}`),
   )
