@@ -3,10 +3,13 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const DataBaseConnection = require('./config/database')
-const customerRouter = require('./api/customer')
-const orderRouter = require('./api/order')
 const { APP_PORT } = process.env
 const app = express()
+
+// api
+const customerRouter = require('./api/customer')
+const orderRouter = require('./api/order')
+const branchRouter = require('./api/branch')
 
 require('dotenv').config()
 
@@ -25,6 +28,7 @@ app
   .use(bodyParser.json())
   .use('/api/customer', customerRouter)
   .use('/api/order', orderRouter)
+  .use('/api/branch', branchRouter)
   .listen(APP_PORT, () =>
     console.log(`Your app listening to port ${APP_PORT}`),
   )
