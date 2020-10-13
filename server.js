@@ -10,6 +10,7 @@ const app = express()
 const customerRouter = require('./api/customer')
 const orderRouter = require('./api/order')
 const branchRouter = require('./api/branch')
+const packageRouter = require('./api/package')
 
 require('dotenv').config()
 
@@ -29,6 +30,7 @@ app
   .use('/api/customer', customerRouter)
   .use('/api/order', orderRouter)
   .use('/api/branch', branchRouter)
+  .use('/api/package', packageRouter)
   .listen(APP_PORT, () =>
     console.log(`Your app listening to port ${APP_PORT}`),
   )
