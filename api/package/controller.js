@@ -1,54 +1,75 @@
-const { successResponses, errorResponses } = require('../../responses')
 const package = require('./model')
+const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
-  index: function (req, res) {
-    package.get(req.con, function (err, rows) {
-      const resp = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(resp)
-    })
+  getAll: async(req, res) => {
+    try{
+      const packages = await package.findAll()
+      const data = pagination(packages, {...req.query})
+      return successResponses[200](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  create: function (req, res) {
-    res.json(successResponses.success(['selamat', 'anda', 'berhasil']))
+  create: async(req, res) => {
+    try{
+      const data = await package.create({...req.body})
+      return successResponses[201](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  store: function(req, res) {
-    package.create(req.con, req.body, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.created()
-      res.json(respon)
-    })
+  update: async(req, res) => {
+    try{
+      const data = await package.update({...req.body},{
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[202](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  destroy: function(req, res) {
-    package.destroy(req.con, req.params.id, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.deleted()
-      res.json(respon)
-    })
+  getById: async(req, res) => {
+    try{
+      const data = await package.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(data!=null){
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  edit: function(req, res) {
-    package.getID(req.con, req.params.id, function(err, rows) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(respon)
-    })
+  delete: async(req, res) => {
+    try{
+      const cek = await package.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(cek!=null){
+        const data = await package.destroy({
+          where: {
+            id: req.params.id
+          }
+        })
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message:err.message})
+    }
   },
-
-  update: function(req, res) {
-    package.update(req.con, req.body, req.params.id, function(err) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.updated()
-      res.json(respon)
-    })
-  }
-
 }

@@ -1,39 +1,17 @@
-var moment = require('moment')
+const { DataTypes } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
+const orders = require('../order/model')
 
-module.exports = {
-  get: function (con, callback) {
-    con.query('SELECT * FROM `package`', callback)
-  },
+const packages = DatabaseConnection.define('packages', {
+  nama: DataTypes.STRING,
+  harga: DataTypes.INTEGER,
+})
 
-  getID: function (con, id, callback) {
-    con.query(`SELECT * FROM \`package\` WHERE id=${id}`, callback)
-  },
+packages.hasOne(orders, {
+  foreignKey: 'packagesId',
+  as: 'orders',
+})
 
-  create: function (con, data, callback){
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(`
-      INSERT INTO \`package\`
-      SET nama='${data.nama}',
-          harga='${data.harga}',
-          created_at='${now}',
-          updated_at='${now}'`,
-      callback
-    )
-  },
+orders.belongsTo(packages, { as: 'packages'})
 
-  destroy: function(con, id, callback) {
-    con.query(`DELETE FROM \`package\` WHERE id=${id}`, callback)
-  },
-
-  update: function(con, data, id, callback) {
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(
-     `UPDATE \`package\`
-      SET nama='${data.nama}',
-          harga='${data.harga}',
-          updated_at='${now}'
-      WHERE id='${id}'`,
-      callback
-    )
-  }
-}
+module.exports = packages
