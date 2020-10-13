@@ -1,39 +1,17 @@
-var moment = require('moment')
+const { DataTypes } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
+const orders = require('../order/model')
 
-module.exports = {
-  get: function (con, callback) {
-    con.query('SELECT * FROM `branch`', callback)
-  },
+const branchs = DatabaseConnection.define('branchs', {
+  address_id: DataTypes.INTEGER,
+  nama: DataTypes.STRING,
+})
 
-  getID: function (con, id, callback) {
-    con.query(`SELECT * FROM \`branch\` WHERE id=${id}`, callback)
-  },
+branchs.hasMany(orders, {
+  foreignKey: 'branchsId',
+  as: 'orders',
+})
 
-  create: function (con, data, callback){
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(`
-      INSERT INTO \`branch\`
-      SET nama='${data.nama}',
-          alamat='${data.alamat}',
-          created_at='${now}',
-          updated_at='${now}'`,
-      callback
-    )
-  },
+orders.belongsTo(branchs, { as: 'branchs'})
 
-  destroy: function(con, id, callback) {
-    con.query(`DELETE FROM \`branch\` WHERE id=${id}`, callback)
-  },
-
-  update: function(con, data, id, callback) {
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(
-     `UPDATE \`branch\`
-      SET nama='${data.nama}',
-          alamat='${data.alamat}',
-          updated_at='${now}'
-      WHERE id='${id}'`,
-      callback
-    )
-  }
-}
+module.exports = branchs

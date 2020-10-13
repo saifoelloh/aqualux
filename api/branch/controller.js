@@ -1,54 +1,75 @@
-const { successResponses, errorResponses } = require('../../responses')
 const branch = require('./model')
+const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
-  index: function (req, res) {
-    branch.get(req.con, function (err, rows) {
-      const resp = err
-        ? errorResponses.not_found(err)
-        : successResponses.success(rows)
-      res.json(resp)
-    })
+  getAll: async(req, res) => {
+    try{
+      const branchs = await branch.findAll()
+      const data = pagination(branchs, {...req.query})
+      return successResponses[200](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  create: function (req, res) {
-    res.json(successResponses.success(['selamat', 'anda', 'berhasil']))
+  create: async(req, res) => {
+    try{
+      const data = await branch.create({...req.body})
+      return successResponses[201](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  store: function(req, res) {
-    branch.create(req.con, req.body, function(err){
-      const respon = err
-        ? errorResponses.bad_request(err)
-        : successResponses.created()
-      res.json(respon)
-    })
+  update: async(req, res) => {
+    try{
+      const data = await branch.update({...req.body},{
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[202](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  destroy: function(req, res) {
-    branch.destroy(req.con, req.params.id, function(err){
-      const respon = err
-        ? errorResponses.bad_request(err)
-        : successResponses.deleted()
-      res.json(respon)
-    })
+  getById: async(req, res) => {
+    try{
+      const data = await branch.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(data!=null){
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  edit: function(req, res) {
-    branch.getID(req.con, req.params.id, function(err, rows) {
-      const respon = err
-        ? errorResponses.bad_request(err)
-        : successResponses.success(rows)
-      res.json(respon)
-    })
+  delete: async(req, res) => {
+    try{
+      const cek = await branch.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(cek!=null){
+        const data = await branch.destroy({
+          where: {
+            id: req.params.id
+          }
+        })
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message:err.message})
+    }
   },
-
-  update: function(req, res) {
-    branch.update(req.con, req.body, req.params.id, function(err) {
-      const respon = err
-        ? errorResponses.bad_request(err)
-        : successResponses.updated()
-      res.json(respon)
-    })
-  }
-
 }
