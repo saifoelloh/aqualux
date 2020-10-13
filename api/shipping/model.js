@@ -1,44 +1,22 @@
-var moment = require('moment')
+const { DataTypes } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
+const orders = require('../order/model')
 
-module.exports = {
-  get: function (con, callback) {
-    con.query('SELECT * FROM `shipping`', callback)
-  },
+const shippings = DatabaseConnection.define('shippings', {
+  ordersId: DataTypes.INTEGER,
+  surat_jalan: DataTypes.STRING,
+  jadwal: DataTypes.DATEONLY,
+  catatan: DataTypes.STRING,
+  status: DataTypes.ENUM('belum sampai', 'sudah sampai'),
+})
 
-  getID: function (con, id, callback) {
-    con.query(`SELECT * FROM \`shipping\` WHERE id=${id}`, callback)
-  },
+shippings.belongsTo(orders, { 
+  as: 'orders'
+})
 
-  create: function (con, data, callback){
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(`
-      INSERT INTO \`shipping\`
-      SET order_id='${data.order_id}',
-          konfirmasi='${data.konfirmasi}',
-          bank='${data.bank}',
-          jadwal='${data.jadwal}',
-          created_at='${now}',
-          updated_at='${now}'`,
-      callback
-    )
-  },
+orders.hasOne(shippings, {
+  foreignKey: 'ordersId',
+  as: 'shippings',
+})
 
-  destroy: function(con, id, callback) {
-    con.query(`DELETE FROM \`shipping\` WHERE id=${id}`, callback)
-  },
-
-  update: function(con, data, id, callback) {
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(
-     `UPDATE \`shipping\`
-      SET order_id='${data.order_id}',
-          konfirmasi='${data.konfirmasi}',
-          bank='${data.bank}',
-          jadwal='${data.jadwal}',
-          created_at='${now}',
-          updated_at='${now}'
-      WHERE id='${id}'`,
-      callback
-    )
-  }
-}
+module.exports = shippings
