@@ -53,13 +53,21 @@ module.exports = {
 
   delete: async(req, res) => {
     try{
-      res.send(this.getById(req, res))
-      const data = await customer.destroy({
+      const cek = await customer.findOne({
         where: {
           id: req.params.id
         }
       })
-      return successResponses[203](res, {data})
+      if(cek!=null){
+        const data = await customer.destroy({
+          where: {
+            id: req.params.id
+          }
+        })
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
     }catch(err){
       return errorResponses[400](res, {message:err.message})
     }
