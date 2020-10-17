@@ -1,54 +1,80 @@
-const { successResponses, errorResponses } = require('../../responses')
 const user = require('./model')
+const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
-  index: function (req, res) {
-    user.get(req.con, function (err, rows) {
-      const resp = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(resp)
-    })
+  getAll: async(req, res) => {
+    try{
+      const users = await user.findAll({
+        // attributes : {
+        //   exclude: ['orderconfirmationsId','orderConfirmationsId','usersId']
+        // },
+        // include: ['order_confirmations','usersId'],
+      })
+      const data = pagination(users, {...req.query})
+      return successResponses[200](res, {data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  create: function (req, res) {
-    res.json(successResponses.success(['selamat', 'anda', 'berhasil']))
+  create: async(req, res) => {
+    try{
+      const data = await user.create({...req.body})
+      return successResponses[201](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  store: function(req, res) {
-    user.create(req.con, req.body, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.created()
-      res.json(respon)
-    })
+  update: async(req, res) => {
+    try{
+      const data = await user.update({...req.body},{
+        where: {
+          id: req.params.id
+        }
+      })
+      return successResponses[202](res,{data})
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  destroy: function(req, res) {
-    user.destroy(req.con, req.params.id, function(err){
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.deleted()
-      res.json(respon)
-    })
+  getById: async(req, res) => {
+    try{
+      const data = await user.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(data!=null){
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
   },
 
-  edit: function(req, res) {
-    user.getID(req.con, req.params.id, function(err, rows) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.success(rows)
-      res.json(respon)
-    })
+  delete: async(req, res) => {
+    try{
+      const cek = await user.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+      if(cek!=null){
+        const data = await user.destroy({
+          where: {
+            id: req.params.id
+          }
+        })
+        res.send(successResponses[200](res, {data}))
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message:err.message})
+    }
   },
-
-  update: function(req, res) {
-    user.update(req.con, req.body, req.params.id, function(err) {
-      const respon = err
-        ? errorResponses['bad request'](err)
-        : successResponses.updated()
-      res.json(respon)
-    })
-  }
-
 }

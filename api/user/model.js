@@ -1,45 +1,17 @@
-var moment = require('moment')
+const { DataTypes } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
+const orders = require('../order/model')
 
-module.exports = {
-  get: function (con, callback) {
-    con.query('SELECT * FROM `user`', callback)
-  },
+const users = DatabaseConnection.define('users', {
+  nama: DataTypes.STRING,
+  jabatan: DataTypes.STRING,
+  telepon: DataTypes.STRING,
+  email: DataTypes.STRING,
+  address_id: DataTypes.INTEGER,
+})
 
-  getID: function (con, id, callback) {
-    con.query(`SELECT * FROM \`user\` WHERE id=${id}`, callback)
-  },
+orders.belongsTo(users, {
+  as: 'users',
+})
 
-  create: function (con, data, callback){
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(`
-      INSERT INTO \`user\`
-      SET nama='${data.nama}',
-          jabatan='${data.jabatan}',
-          telepon='${data.telepon}',
-          email='${data.email}',
-          alamat='${data.alamat}',
-          created_at='${now}',
-          updated_at='${now}'`,
-      callback
-    )
-  },
-
-  destroy: function(con, id, callback) {
-    con.query(`DELETE FROM \`user\` WHERE id=${id}`, callback)
-  },
-
-  update: function(con, data, id, callback) {
-    var now = moment().format('YYYY-MM-DD h:mm:ss')
-    con.query(
-     `UPDATE \`user\`
-      SET nama='${data.nama}',
-          jabatan='${data.jabatan}',
-          telepon='${data.telepon}',
-          email='${data.email}',
-          alamat='${data.alamat}',
-          updated_at='${now}'
-      WHERE id='${id}'`,
-      callback
-    )
-  }
-}
+module.exports = users
