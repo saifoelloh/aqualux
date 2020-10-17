@@ -5,7 +5,12 @@ const { successResponses, errorResponses, pagination } = require('../../utils')
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const branchs = await branch.findAll()
+      const branchs = await branch.findAll({
+        attributes: {
+          exclude: 'addressId'
+        },
+        include: 'address'
+      })
       const data = pagination(branchs, {...req.query})
       return successResponses[200](res, {data})
     }catch(err){

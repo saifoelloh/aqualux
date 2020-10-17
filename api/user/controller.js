@@ -5,10 +5,10 @@ module.exports = {
   getAll: async(req, res) => {
     try{
       const users = await user.findAll({
-        // attributes : {
-        //   exclude: ['orderconfirmationsId','orderConfirmationsId','usersId']
-        // },
-        // include: ['order_confirmations','usersId'],
+        attributes: {
+          exclude: 'addressId'
+        },
+        include: 'address'
       })
       const data = pagination(users, {...req.query})
       return successResponses[200](res, {data})

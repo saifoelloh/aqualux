@@ -7,11 +7,14 @@ const users = DatabaseConnection.define('users', {
   jabatan: DataTypes.STRING,
   telepon: DataTypes.STRING,
   email: DataTypes.STRING,
-  address_id: DataTypes.INTEGER,
+  addressId: DataTypes.INTEGER,
 })
 
-orders.belongsTo(users, {
-  as: 'users',
+users.hasMany(orders, {
+  foreignKey: ['sales','closer'],
+  as: 'orders'
 })
+
+orders.belongsTo(users)
 
 module.exports = users

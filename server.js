@@ -15,6 +15,11 @@ const shippingRouter = require('./api/shipping')
 const order_confirmationRouter = require('./api/order_confirmation')
 const angsuranRouter = require('./api/angsuran')
 const userRouter = require('./api/user')
+const addressRouter = require('./api/address')
+const provinsiRouter = require('./api/provinsi')
+const kabupatenRouter = require('./api/kabupaten')
+const kecamatanRouter = require('./api/kecamatan')
+const kode_posRouter = require('./api/kode_pos')
 
 require('dotenv').config()
 
@@ -39,6 +44,11 @@ app
   .use('/api/order_confirmation', order_confirmationRouter)
   .use('/api/angsuran', angsuranRouter)
   .use('/api/user', userRouter)
+  .use('/api/address', addressRouter)
+  .use('/api/provinsi', provinsiRouter)
+  .use('/api/kabupaten', kabupatenRouter)
+  .use('/api/kecamatan', kecamatanRouter)
+  .use('/api/kode_pos', kode_posRouter)
   .listen(APP_PORT, () =>
     console.log(`Your app listening to port ${APP_PORT}`),
   )

@@ -1,10 +1,11 @@
 const Joi = require('joi')
 
 const schema = Joi.object().keys({
-    usersId: Joi.number().required(),
-    orderconfirmationsId: Joi.number().required(),
-    nominal: Joi.number().required(),
-    tanggal: Joi.date().required(),
+    nama: Joi.string().required(),
+    jabatan: Joi.string().required(),
+    telepon: Joi.string().alphanum().min(10).required(),
+    email: Joi.string().email().required(),
+    addressId: Joi.number().integer().required(),
 })
 
 module.exports = schema

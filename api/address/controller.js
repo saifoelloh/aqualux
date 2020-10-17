@@ -1,16 +1,16 @@
-const order = require('./model')
-const {successResponses, errorResponses, pagination} = require('../../utils')
+const address = require('./model')
+const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const orders = await order.findAll({
+      const addresses = await address.findAll({
         attributes: {
-          exclude: ['customersId', 'branchsId', 'packagesId','addressId'],
+          exclude: ['provinsiId','kabupatenId','kecamatanId','kodeposId','kodePosId']
         },
-        include: ['customers','branchs','packages','addresses'],
+        include: ['provinsi','kabupaten','kecamatan','kode_pos']
       })
-      const data = pagination(orders,{...req.query})
+      const data = pagination(addresses, {...req.query})
       return successResponses[200](res, {data})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
@@ -19,7 +19,7 @@ module.exports = {
 
   create: async(req, res) => {
     try{
-      const data = await order.create({...req.body})
+      const data = await address.create({...req.body})
       return successResponses[201](res,{data})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
@@ -28,7 +28,7 @@ module.exports = {
 
   update: async(req, res) => {
     try{
-      const data = await order.update({...req.body},{
+      const data = await address.update({...req.body},{
         where: {
           id: req.params.id
         }
@@ -41,7 +41,7 @@ module.exports = {
 
   getById: async(req, res) => {
     try{
-      const data = await order.findOne({
+      const data = await address.findOne({
         where: {
           id: req.params.id
         }
@@ -58,13 +58,13 @@ module.exports = {
 
   delete: async(req, res) => {
     try{
-      const cek = await order.findOne({
+      const cek = await address.findOne({
         where: {
           id: req.params.id
         }
       })
       if(cek!=null){
-        const data = await order.destroy({
+        const data = await address.destroy({
           where: {
             id: req.params.id
           }
