@@ -1,16 +1,16 @@
-const package = require('./model')
+const order_confirmation = require('./model')
 const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const packages = await package.findAll({
+      const order_confirmations = await order_confirmation.findAll({
         attributes: {
           exclude: ['ordersId'],
         },
         include: 'orders'
       })
-      const data = pagination(packages, {...req.query})
+      const data = pagination(order_confirmations, {...req.query})
       return successResponses[200](res, {data})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
@@ -19,7 +19,7 @@ module.exports = {
 
   create: async(req, res) => {
     try{
-      const data = await package.create({...req.body})
+      const data = await order_confirmation.create({...req.body})
       return successResponses[201](res,{data})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
@@ -28,7 +28,7 @@ module.exports = {
 
   update: async(req, res) => {
     try{
-      const data = await package.update({...req.body},{
+      const data = await order_confirmation.update({...req.body},{
         where: {
           id: req.params.id
         }
@@ -41,7 +41,7 @@ module.exports = {
 
   getById: async(req, res) => {
     try{
-      const data = await package.findOne({
+      const data = await order_confirmation.findOne({
         where: {
           id: req.params.id
         }
@@ -58,13 +58,13 @@ module.exports = {
 
   delete: async(req, res) => {
     try{
-      const cek = await package.findOne({
+      const cek = await order_confirmation.findOne({
         where: {
           id: req.params.id
         }
       })
       if(cek!=null){
-        const data = await package.destroy({
+        const data = await order_confirmation.destroy({
           where: {
             id: req.params.id
           }
