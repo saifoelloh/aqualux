@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/systemaq/backend.systemaqualux.com
+    - /bin/cp -R * $DEPLOYPATH
