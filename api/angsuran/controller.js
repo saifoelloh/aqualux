@@ -4,7 +4,12 @@ const { successResponses, errorResponses, pagination } = require('../../utils')
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const angsurans = await angsuran.findAll()
+      const angsurans = await angsuran.findAll({
+        attributes : {
+          exclude: ['orderconfirmationsId','orderConfirmationsId','usersId']
+        },
+        include: ['order_confirmations','users'],
+      })
       const data = pagination(angsurans, {...req.query})
       return successResponses[200](res, {data})
     }catch(err){
