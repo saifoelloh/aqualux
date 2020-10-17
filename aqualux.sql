@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 09, 2020 at 06:13 PM
+-- Generation Time: Oct 17, 2020 at 11:41 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -24,63 +24,70 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
+-- Table structure for table `addresses`
 --
 
-CREATE TABLE `address` (
+CREATE TABLE `addresses` (
   `id` int(11) NOT NULL,
-  `provinsi_id` int(11) NOT NULL,
-  `kabupaten_id` int(11) NOT NULL,
-  `kecamatan_id` int(11) NOT NULL,
-  `kode_pos_id` int(11) NOT NULL,
+  `provinsiId` int(11) NOT NULL,
+  `kabupatenId` int(11) NOT NULL,
+  `kecamatanId` int(11) NOT NULL,
+  `kodeposId` int(11) NOT NULL,
   `jalan` varchar(200) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `address`
+-- Dumping data for table `addresses`
 --
 
-INSERT INTO `address` (`id`, `provinsi_id`, `kabupaten_id`, `kecamatan_id`, `kode_pos_id`, `jalan`, `created_at`, `updated_at`) VALUES
+INSERT INTO `addresses` (`id`, `provinsiId`, `kabupatenId`, `kecamatanId`, `kodeposId`, `jalan`, `createdAt`, `updatedAt`) VALUES
 (1, 33, 3327, 3327030, 1, 'jl. sikasur', '2020-10-06 05:46:46', '2020-10-06 05:46:46');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `angsuran`
+-- Table structure for table `angsurans`
 --
 
-CREATE TABLE `angsuran` (
+CREATE TABLE `angsurans` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `order_confirmation_id` int(11) NOT NULL,
+  `usersId` int(11) NOT NULL,
+  `orderconfirmationsId` int(11) NOT NULL,
   `nominal` int(11) NOT NULL,
   `tanggal` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `angsurans`
+--
+
+INSERT INTO `angsurans` (`id`, `usersId`, `orderconfirmationsId`, `nominal`, `tanggal`, `createdAt`, `updatedAt`) VALUES
+(3, 1, 1, 2000, '2020-10-13', '2020-10-14 08:09:32', '2020-10-14 08:09:32');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `branch`
+-- Table structure for table `branchs`
 --
 
-CREATE TABLE `branch` (
+CREATE TABLE `branchs` (
   `id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL,
+  `addressId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `branch`
+-- Dumping data for table `branchs`
 --
 
-INSERT INTO `branch` (`id`, `address_id`, `nama`, `created_at`, `updated_at`) VALUES
-(1, 1, 'pemalang', '2020-10-06 06:34:03', '2020-10-06 06:34:03');
+INSERT INTO `branchs` (`id`, `addressId`, `nama`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'pemalang', '2020-10-06 06:34:03', '2020-10-13 17:02:33');
 
 -- --------------------------------------------------------
 
@@ -90,7 +97,7 @@ INSERT INTO `branch` (`id`, `address_id`, `nama`, `created_at`, `updated_at`) VA
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL,
+  `addressId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `telepon` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -102,29 +109,29 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `address_id`, `nama`, `telepon`, `email`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `customers` (`id`, `addressId`, `nama`, `telepon`, `email`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 'restu indera', '089617009927', 'rstx32@gmail.com', '2020-10-06 05:47:34', '2020-10-09 11:30:51'),
 (11, 1, 'dwihandoko', '0895376936038', 'xtsr23@gmail.com', '2020-10-09 11:29:10', '2020-10-09 11:29:10');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kabupaten`
+-- Table structure for table `kabupatens`
 --
 
-CREATE TABLE `kabupaten` (
+CREATE TABLE `kabupatens` (
   `id` int(11) NOT NULL,
-  `provinsi_id` int(11) NOT NULL,
+  `provinsiId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `kabupaten`
+-- Dumping data for table `kabupatens`
 --
 
-INSERT INTO `kabupaten` (`id`, `provinsi_id`, `nama`, `created_at`, `updated_at`) VALUES
+INSERT INTO `kabupatens` (`id`, `provinsiId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (1101, 11, 'Kab. Simeulue', '2020-10-05 19:30:42', '2020-10-05 19:30:42'),
 (1102, 11, 'Kab. Aceh Singkil', '2020-10-05 19:30:42', '2020-10-05 19:30:42'),
 (1103, 11, 'Kab. Aceh Selatan', '2020-10-05 19:30:42', '2020-10-05 19:30:42'),
@@ -628,22 +635,22 @@ INSERT INTO `kabupaten` (`id`, `provinsi_id`, `nama`, `created_at`, `updated_at`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kecamatan`
+-- Table structure for table `kecamatans`
 --
 
-CREATE TABLE `kecamatan` (
+CREATE TABLE `kecamatans` (
   `id` int(11) NOT NULL,
-  `kabupaten_id` int(11) NOT NULL,
+  `kabupatenId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `kecamatan`
+-- Dumping data for table `kecamatans`
 --
 
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (1101010, 1101, ' Teupah Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1101020, 1101, ' Simeulue Timur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1101021, 1101, ' Teupah Barat', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -1296,7 +1303,7 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (1225080, 1225, ' Moro O', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1271010, 1271, ' Sibolga Utara', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1271020, 1271, ' Sibolga Kota', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (1271030, 1271, ' Sibolga Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1271031, 1271, ' Sibolga Sambas', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1272010, 1272, ' Datuk Bandar', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -1938,7 +1945,7 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (1606030, 1606, ' Sungai Keruh', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1606040, 1606, ' Sekayu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1606041, 1606, ' Lais', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (1606090, 1606, ' Sungai Lilin', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1606091, 1606, ' Keluang', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1606092, 1606, ' Babat Supat', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -2584,9 +2591,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (3201090, 3201, ' Caringin', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3201100, 3201, ' Ciawi', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3201110, 3201, ' Cisarua', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(3201120, 3201, ' Megamendung', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(3201130, 3201, ' Sukaraja', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3201120, 3201, ' Megamendung', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3201130, 3201, ' Sukaraja', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (3201140, 3201, ' Babakan Madang', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3201150, 3201, ' Sukamakmur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3201160, 3201, ' Cariu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -3249,9 +3256,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (3302740, 3302, ' Purwokerto Utara', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3303010, 3303, ' Kemangkon', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3303020, 3303, ' Bukateja', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(3303030, 3303, ' Kejobong', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(3303040, 3303, ' Pengadegan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3303030, 3303, ' Kejobong', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3303040, 3303, ' Pengadegan', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (3303050, 3303, ' Kaligondang', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3303060, 3303, ' Purbalingga', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3303070, 3303, ' Kalimanah', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -3924,9 +3931,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (3505080, 3505, ' Kanigoro', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3505090, 3505, ' Talun', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3505100, 3505, ' Selopuro', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(3505110, 3505, ' Kesamben', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(3505120, 3505, ' Selorejo', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3505110, 3505, ' Kesamben', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3505120, 3505, ' Selorejo', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (3505130, 3505, ' Doko', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3505140, 3505, ' Wlingi', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3505150, 3505, ' Gandusari', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -4602,9 +4609,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (3603170, 3603, ' Rajeg', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3603180, 3603, ' Sepatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3603181, 3603, ' Sepatan Timur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(3603190, 3603, ' Pakuhaji', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(3603200, 3603, ' Teluknaga', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3603190, 3603, ' Pakuhaji', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(3603200, 3603, ' Teluknaga', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (3603210, 3603, ' Kosambi', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3604010, 3604, ' Cinangka', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (3604020, 3604, ' Padarincang', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -5267,9 +5274,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (6108090, 6108, ' Embaloh Hilir', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (6108100, 6108, ' Bunut Hilir', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (6108110, 6108, ' Boyan Tanjung', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(6108120, 6108, ' Pengkadan', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(6108130, 6108, ' Jongkong', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(6108120, 6108, ' Pengkadan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(6108130, 6108, ' Jongkong', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (6108140, 6108, ' Selimbau', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (6108141, 6108, ' Danau Sentarum', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (6108150, 6108, ' Suhaid', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -5916,9 +5923,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (7172021, 7172, ' Lembeh Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7172022, 7172, ' Lembeh Utara', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7172030, 7172, ' Aertembaga', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(7172031, 7172, ' Maesa', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(7172040, 7172, ' Ranowulu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(7172031, 7172, ' Maesa', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(7172040, 7172, ' Ranowulu', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (7173010, 7173, ' Tomohon Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7173020, 7173, ' Tomohon Tengah', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7173021, 7173, ' Tomohon Timur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -6578,9 +6585,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (7408052, 7408, ' Pakue Tengah', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7408060, 7408, ' Batu Putih', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7408061, 7408, ' Porehu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(7408062, 7408, ' Tolala', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(7409100, 7409, ' Bonegunu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(7408062, 7408, ' Tolala', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(7409100, 7409, ' Bonegunu', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (7409101, 7409, ' Kambowa', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7409110, 7409, ' Wakorumba', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (7409120, 7409, ' Kulisusu', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -7240,9 +7247,9 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 (9409100, 9409, ' Biak Barat', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (9409101, 9409, ' Swandiwe', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (9410030, 9410, ' Paniai Timur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
-(9410031, 9410, ' Yatamo', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
-INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at`) VALUES
-(9410032, 9410, ' Kebo', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(9410031, 9410, ' Yatamo', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(9410032, 9410, ' Kebo', '2020-10-05 19:30:46', '2020-10-05 19:30:46');
+INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (9410040, 9410, ' Bibida', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (9410041, 9410, ' Dumadama', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (9410070, 9410, ' Aradide', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -7541,17 +7548,17 @@ INSERT INTO `kecamatan` (`id`, `kabupaten_id`, `nama`, `created_at`, `updated_at
 
 CREATE TABLE `kode_pos` (
   `id` int(11) NOT NULL,
-  `kecamatan_id` int(11) NOT NULL,
+  `kecamatanId` int(11) NOT NULL,
   `kode` varchar(5) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `kode_pos`
 --
 
-INSERT INTO `kode_pos` (`id`, `kecamatan_id`, `kode`, `created_at`, `updated_at`) VALUES
+INSERT INTO `kode_pos` (`id`, `kecamatanId`, `kode`, `createdAt`, `updatedAt`) VALUES
 (1, 3327030, '52356', '2020-10-06 05:46:07', '2020-10-06 05:46:07');
 
 -- --------------------------------------------------------
@@ -7563,11 +7570,11 @@ INSERT INTO `kode_pos` (`id`, `kecamatan_id`, `kode`, `created_at`, `updated_at`
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `customersId` int(11) NOT NULL,
-  `branch_id` int(5) NOT NULL,
+  `branchsId` int(5) NOT NULL,
   `sales` int(5) NOT NULL,
   `closer` int(5) NOT NULL,
-  `package_id` int(5) NOT NULL,
-  `address_id` int(5) NOT NULL,
+  `packagesId` int(5) NOT NULL,
+  `addressId` int(5) NOT NULL,
   `kode` varchar(50) NOT NULL,
   `jenis_marketing` enum('online','offline') NOT NULL,
   `jenis_pembayaran` enum('cash','kredit') NOT NULL,
@@ -7584,67 +7591,74 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customersId`, `branch_id`, `sales`, `closer`, `package_id`, `address_id`, `kode`, `jenis_marketing`, `jenis_pembayaran`, `tambahan`, `diskon`, `keterangan`, `bonus`, `tanggal`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `orders` (`id`, `customersId`, `branchsId`, `sales`, `closer`, `packagesId`, `addressId`, `kode`, `jenis_marketing`, `jenis_pembayaran`, `tambahan`, `diskon`, `keterangan`, `bonus`, `tanggal`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 1, 1, 1, 1, 1, 'A01', 'online', 'cash', 0, 0, '0', '0', '2020-10-05', '2020-10-06 12:31:30', '2020-10-06 12:31:30');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_confirmation`
+-- Table structure for table `order_confirmations`
 --
 
-CREATE TABLE `order_confirmation` (
+CREATE TABLE `order_confirmations` (
   `id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `ordersId` int(11) NOT NULL,
   `konfirmasi` enum('terima','tolak') NOT NULL,
   `uang_muka` float NOT NULL,
   `booking_fee` float NOT NULL,
   `jumlah_angsuran` int(11) NOT NULL,
   `jatuh_tempo` date NOT NULL,
   `tanggal` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_confirmations`
+--
+
+INSERT INTO `order_confirmations` (`id`, `ordersId`, `konfirmasi`, `uang_muka`, `booking_fee`, `jumlah_angsuran`, `jatuh_tempo`, `tanggal`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'terima', 1000000, 800000, 3, '2020-10-31', '2020-10-15', '2020-10-13 18:19:36', '2020-10-13 18:19:36');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `package`
+-- Table structure for table `packages`
 --
 
-CREATE TABLE `package` (
+CREATE TABLE `packages` (
   `id` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `harga` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `package`
+-- Dumping data for table `packages`
 --
 
-INSERT INTO `package` (`id`, `nama`, `harga`, `created_at`, `updated_at`) VALUES
-(1, 'paket 1', 2000, '2020-10-06 12:30:52', '2020-10-06 12:30:52');
+INSERT INTO `packages` (`id`, `nama`, `harga`, `createdAt`, `updatedAt`) VALUES
+(1, 'paket 2', 6000, '2020-10-06 12:30:52', '2020-10-13 17:19:37');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `provinsi`
+-- Table structure for table `provinses`
 --
 
-CREATE TABLE `provinsi` (
+CREATE TABLE `provinses` (
   `id` int(11) NOT NULL,
   `nama` varchar(100) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `provinsi`
+-- Dumping data for table `provinses`
 --
 
-INSERT INTO `provinsi` (`id`, `nama`, `created_at`, `updated_at`) VALUES
+INSERT INTO `provinses` (`id`, `nama`, `createdAt`, `updatedAt`) VALUES
 (11, 'Aceh', '2020-10-05 19:29:37', '2020-10-05 19:29:37'),
 (12, 'Sumatera Utara', '2020-10-05 19:29:37', '2020-10-05 19:29:37'),
 (13, 'Sumatera Barat', '2020-10-05 19:29:37', '2020-10-05 19:29:37'),
@@ -7683,42 +7697,49 @@ INSERT INTO `provinsi` (`id`, `nama`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shipping`
+-- Table structure for table `shippings`
 --
 
-CREATE TABLE `shipping` (
+CREATE TABLE `shippings` (
   `id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `ordersId` int(11) NOT NULL,
   `surat_jalan` varchar(200) NOT NULL,
   `jadwal` date NOT NULL,
-  `catatan` varchar(200) NOT NULL,
+  `catatan` varchar(200) DEFAULT NULL,
   `status` enum('belum sampai','sudah sampai') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shippings`
+--
+
+INSERT INTO `shippings` (`id`, `ordersId`, `surat_jalan`, `jadwal`, `catatan`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'jalan bray', '2020-10-15', 'doneee', 'sudah sampai', '2020-10-13 17:52:48', '2020-10-13 17:54:47');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `jabatan` varchar(50) NOT NULL,
   `telepon` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `address_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `addressId` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user` (`id`, `nama`, `jabatan`, `telepon`, `email`, `address_id`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `nama`, `jabatan`, `telepon`, `email`, `addressId`, `createdAt`, `updatedAt`) VALUES
 (1, 'admin', 'admin', '089617009927', 'admin@admin.com', 1, '2020-10-06 05:50:03', '2020-10-06 05:50:03');
 
 --
@@ -7726,30 +7747,30 @@ INSERT INTO `user` (`id`, `nama`, `jabatan`, `telepon`, `email`, `address_id`, `
 --
 
 --
--- Indexes for table `address`
+-- Indexes for table `addresses`
 --
-ALTER TABLE `address`
+ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `address_provID` (`provinsi_id`),
-  ADD KEY `address_kabID` (`kabupaten_id`),
-  ADD KEY `address_kecID` (`kecamatan_id`),
-  ADD KEY `address_posID` (`kode_pos_id`);
+  ADD KEY `address_provID` (`provinsiId`),
+  ADD KEY `address_kabID` (`kabupatenId`),
+  ADD KEY `address_kecID` (`kecamatanId`),
+  ADD KEY `address_posID` (`kodeposId`);
 
 --
--- Indexes for table `angsuran`
+-- Indexes for table `angsurans`
 --
-ALTER TABLE `angsuran`
+ALTER TABLE `angsurans`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `orderConfirmation_id` (`order_confirmation_id`),
+  ADD KEY `user_id` (`usersId`),
+  ADD KEY `orderConfirmation_id` (`orderconfirmationsId`),
   ADD KEY `tanggal` (`tanggal`);
 
 --
--- Indexes for table `branch`
+-- Indexes for table `branchs`
 --
-ALTER TABLE `branch`
+ALTER TABLE `branchs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `address_id` (`address_id`);
+  ADD KEY `address_id` (`addressId`);
 
 --
 -- Indexes for table `customers`
@@ -7757,23 +7778,23 @@ ALTER TABLE `branch`
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
   ADD KEY `nama` (`nama`),
-  ADD KEY `address_id` (`address_id`),
+  ADD KEY `address_id` (`addressId`),
   ADD KEY `telepon` (`telepon`);
 
 --
--- Indexes for table `kabupaten`
+-- Indexes for table `kabupatens`
 --
-ALTER TABLE `kabupaten`
+ALTER TABLE `kabupatens`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `kab_provID` (`provinsi_id`),
+  ADD KEY `kab_provID` (`provinsiId`),
   ADD KEY `nama` (`nama`);
 
 --
--- Indexes for table `kecamatan`
+-- Indexes for table `kecamatans`
 --
-ALTER TABLE `kecamatan`
+ALTER TABLE `kecamatans`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `kec_kabID` (`kabupaten_id`),
+  ADD KEY `kec_kabID` (`kabupatenId`),
   ADD KEY `nama` (`nama`);
 
 --
@@ -7781,78 +7802,78 @@ ALTER TABLE `kecamatan`
 --
 ALTER TABLE `kode_pos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pos_kecID` (`kecamatan_id`);
+  ADD KEY `pos_kecID` (`kecamatanId`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `order_branchID` (`branch_id`),
+  ADD KEY `order_branchID` (`branchsId`),
   ADD KEY `order_sales` (`sales`),
-  ADD KEY `order_packageID` (`package_id`),
-  ADD KEY `order_addressID` (`address_id`),
+  ADD KEY `order_packageID` (`packagesId`),
+  ADD KEY `order_addressID` (`addressId`),
   ADD KEY `order_customerID` (`customersId`) USING BTREE,
   ADD KEY `order_closer` (`closer`),
   ADD KEY `kode` (`kode`);
 
 --
--- Indexes for table `order_confirmation`
+-- Indexes for table `order_confirmations`
 --
-ALTER TABLE `order_confirmation`
+ALTER TABLE `order_confirmations`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `oc_orderID` (`order_id`);
+  ADD KEY `oc_orderID` (`ordersId`);
 
 --
--- Indexes for table `package`
+-- Indexes for table `packages`
 --
-ALTER TABLE `package`
+ALTER TABLE `packages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `provinsi`
+-- Indexes for table `provinses`
 --
-ALTER TABLE `provinsi`
+ALTER TABLE `provinses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `nama` (`nama`);
 
 --
--- Indexes for table `shipping`
+-- Indexes for table `shippings`
 --
-ALTER TABLE `shipping`
+ALTER TABLE `shippings`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `shipping_orderID` (`order_id`),
+  ADD KEY `shipping_orderID` (`ordersId`),
   ADD KEY `jadwal` (`jadwal`),
   ADD KEY `surat_jalan` (`surat_jalan`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `users`
 --
-ALTER TABLE `user`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `address` (`address_id`);
+  ADD KEY `address` (`addressId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `address`
+-- AUTO_INCREMENT for table `addresses`
 --
-ALTER TABLE `address`
+ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `angsuran`
+-- AUTO_INCREMENT for table `angsurans`
 --
-ALTER TABLE `angsuran`
+ALTER TABLE `angsurans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `branchs`
+--
+ALTER TABLE `branchs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `branch`
---
-ALTER TABLE `branch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -7861,15 +7882,15 @@ ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `kabupaten`
+-- AUTO_INCREMENT for table `kabupatens`
 --
-ALTER TABLE `kabupaten`
+ALTER TABLE `kabupatens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9472;
 
 --
--- AUTO_INCREMENT for table `kecamatan`
+-- AUTO_INCREMENT for table `kecamatans`
 --
-ALTER TABLE `kecamatan`
+ALTER TABLE `kecamatans`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9471041;
 
 --
@@ -7885,33 +7906,33 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `order_confirmation`
+-- AUTO_INCREMENT for table `order_confirmations`
 --
-ALTER TABLE `order_confirmation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `order_confirmations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `package`
+-- AUTO_INCREMENT for table `packages`
 --
-ALTER TABLE `package`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `packages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `provinsi`
+-- AUTO_INCREMENT for table `provinses`
 --
-ALTER TABLE `provinsi`
+ALTER TABLE `provinses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
--- AUTO_INCREMENT for table `shipping`
+-- AUTO_INCREMENT for table `shippings`
 --
-ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `shippings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `user`
+ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -7919,79 +7940,79 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `address`
+-- Constraints for table `addresses`
 --
-ALTER TABLE `address`
-  ADD CONSTRAINT `address_kabID` FOREIGN KEY (`kabupaten_id`) REFERENCES `kabupaten` (`id`),
-  ADD CONSTRAINT `address_kecID` FOREIGN KEY (`kecamatan_id`) REFERENCES `kecamatan` (`id`),
-  ADD CONSTRAINT `address_posID` FOREIGN KEY (`kode_pos_id`) REFERENCES `kode_pos` (`id`),
-  ADD CONSTRAINT `address_provID` FOREIGN KEY (`provinsi_id`) REFERENCES `provinsi` (`id`);
+ALTER TABLE `addresses`
+  ADD CONSTRAINT `address_kabID` FOREIGN KEY (`kabupatenId`) REFERENCES `kabupatens` (`id`),
+  ADD CONSTRAINT `address_kecID` FOREIGN KEY (`kecamatanId`) REFERENCES `kecamatans` (`id`),
+  ADD CONSTRAINT `address_posID` FOREIGN KEY (`kodeposId`) REFERENCES `kode_pos` (`id`),
+  ADD CONSTRAINT `address_provID` FOREIGN KEY (`provinsiId`) REFERENCES `provinses` (`id`);
 
 --
--- Constraints for table `angsuran`
+-- Constraints for table `angsurans`
 --
-ALTER TABLE `angsuran`
-  ADD CONSTRAINT `orderConfirmation_id` FOREIGN KEY (`order_confirmation_id`) REFERENCES `order_confirmation` (`id`),
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `angsurans`
+  ADD CONSTRAINT `orderConfirmation_id` FOREIGN KEY (`orderconfirmationsId`) REFERENCES `order_confirmations` (`id`),
+  ADD CONSTRAINT `user_id` FOREIGN KEY (`usersId`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `branch`
+-- Constraints for table `branchs`
 --
-ALTER TABLE `branch`
-  ADD CONSTRAINT `address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+ALTER TABLE `branchs`
+  ADD CONSTRAINT `address_id` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
 
 --
 -- Constraints for table `customers`
 --
 ALTER TABLE `customers`
-  ADD CONSTRAINT `addressID` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `addressID` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
 
 --
--- Constraints for table `kabupaten`
+-- Constraints for table `kabupatens`
 --
-ALTER TABLE `kabupaten`
-  ADD CONSTRAINT `kab_provID` FOREIGN KEY (`provinsi_id`) REFERENCES `provinsi` (`id`);
+ALTER TABLE `kabupatens`
+  ADD CONSTRAINT `kab_provID` FOREIGN KEY (`provinsiId`) REFERENCES `provinses` (`id`);
 
 --
--- Constraints for table `kecamatan`
+-- Constraints for table `kecamatans`
 --
-ALTER TABLE `kecamatan`
-  ADD CONSTRAINT `kec_kabID` FOREIGN KEY (`kabupaten_id`) REFERENCES `kabupaten` (`id`);
+ALTER TABLE `kecamatans`
+  ADD CONSTRAINT `kec_kabID` FOREIGN KEY (`kabupatenId`) REFERENCES `kabupatens` (`id`);
 
 --
 -- Constraints for table `kode_pos`
 --
 ALTER TABLE `kode_pos`
-  ADD CONSTRAINT `pos_kecID` FOREIGN KEY (`kecamatan_id`) REFERENCES `kecamatan` (`id`);
+  ADD CONSTRAINT `pos_kecID` FOREIGN KEY (`kecamatanId`) REFERENCES `kecamatans` (`id`);
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `order_addressID` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
-  ADD CONSTRAINT `order_branchID` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`id`),
-  ADD CONSTRAINT `order_closer` FOREIGN KEY (`closer`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `order_addressID` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`),
+  ADD CONSTRAINT `order_branchID` FOREIGN KEY (`branchsId`) REFERENCES `branchs` (`id`),
+  ADD CONSTRAINT `order_closer` FOREIGN KEY (`closer`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `order_custID` FOREIGN KEY (`customersId`) REFERENCES `customers` (`id`),
-  ADD CONSTRAINT `order_packageID` FOREIGN KEY (`package_id`) REFERENCES `package` (`id`),
-  ADD CONSTRAINT `order_sales` FOREIGN KEY (`sales`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `order_packageID` FOREIGN KEY (`packagesId`) REFERENCES `packages` (`id`),
+  ADD CONSTRAINT `order_sales` FOREIGN KEY (`sales`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `order_confirmation`
+-- Constraints for table `order_confirmations`
 --
-ALTER TABLE `order_confirmation`
-  ADD CONSTRAINT `oc_orderID` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+ALTER TABLE `order_confirmations`
+  ADD CONSTRAINT `oc_orderID` FOREIGN KEY (`ordersId`) REFERENCES `orders` (`id`);
 
 --
--- Constraints for table `shipping`
+-- Constraints for table `shippings`
 --
-ALTER TABLE `shipping`
-  ADD CONSTRAINT `shipping_orderID` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+ALTER TABLE `shippings`
+  ADD CONSTRAINT `shipping_orderID` FOREIGN KEY (`ordersId`) REFERENCES `orders` (`id`);
 
 --
--- Constraints for table `user`
+-- Constraints for table `users`
 --
-ALTER TABLE `user`
-  ADD CONSTRAINT `address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+ALTER TABLE `users`
+  ADD CONSTRAINT `address` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
