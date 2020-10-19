@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2020 at 11:41 PM
+-- Generation Time: Oct 20, 2020 at 12:46 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -76,7 +76,7 @@ INSERT INTO `angsurans` (`id`, `usersId`, `orderconfirmationsId`, `nominal`, `ta
 
 CREATE TABLE `branchs` (
   `id` int(11) NOT NULL,
-  `addressId` int(11) NOT NULL,
+  `addressesId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
@@ -86,7 +86,7 @@ CREATE TABLE `branchs` (
 -- Dumping data for table `branchs`
 --
 
-INSERT INTO `branchs` (`id`, `addressId`, `nama`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `branchs` (`id`, `addressesId`, `nama`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 'pemalang', '2020-10-06 06:34:03', '2020-10-13 17:02:33');
 
 -- --------------------------------------------------------
@@ -97,7 +97,7 @@ INSERT INTO `branchs` (`id`, `addressId`, `nama`, `createdAt`, `updatedAt`) VALU
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `addressId` int(11) NOT NULL,
+  `addressesId` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `telepon` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `addressId`, `nama`, `telepon`, `email`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `customers` (`id`, `addressesId`, `nama`, `telepon`, `email`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 'restu indera', '089617009927', 'rstx32@gmail.com', '2020-10-06 05:47:34', '2020-10-09 11:30:51'),
 (11, 1, 'dwihandoko', '0895376936038', 'xtsr23@gmail.com', '2020-10-09 11:29:10', '2020-10-09 11:29:10');
 
@@ -7574,7 +7574,7 @@ CREATE TABLE `orders` (
   `sales` int(5) NOT NULL,
   `closer` int(5) NOT NULL,
   `packagesId` int(5) NOT NULL,
-  `addressId` int(5) NOT NULL,
+  `addressesId` int(5) NOT NULL,
   `kode` varchar(50) NOT NULL,
   `jenis_marketing` enum('online','offline') NOT NULL,
   `jenis_pembayaran` enum('cash','kredit') NOT NULL,
@@ -7591,7 +7591,7 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customersId`, `branchsId`, `sales`, `closer`, `packagesId`, `addressId`, `kode`, `jenis_marketing`, `jenis_pembayaran`, `tambahan`, `diskon`, `keterangan`, `bonus`, `tanggal`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `orders` (`id`, `customersId`, `branchsId`, `sales`, `closer`, `packagesId`, `addressesId`, `kode`, `jenis_marketing`, `jenis_pembayaran`, `tambahan`, `diskon`, `keterangan`, `bonus`, `tanggal`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 1, 1, 1, 1, 1, 'A01', 'online', 'cash', 0, 0, '0', '0', '2020-10-05', '2020-10-06 12:31:30', '2020-10-06 12:31:30');
 
 -- --------------------------------------------------------
@@ -7730,7 +7730,7 @@ CREATE TABLE `users` (
   `jabatan` varchar(50) NOT NULL,
   `telepon` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `addressId` int(11) NOT NULL,
+  `addressesId` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -7739,7 +7739,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `nama`, `jabatan`, `telepon`, `email`, `addressId`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `users` (`id`, `nama`, `jabatan`, `telepon`, `email`, `addressesId`, `createdAt`, `updatedAt`) VALUES
 (1, 'admin', 'admin', '089617009927', 'admin@admin.com', 1, '2020-10-06 05:50:03', '2020-10-06 05:50:03');
 
 --
@@ -7770,7 +7770,7 @@ ALTER TABLE `angsurans`
 --
 ALTER TABLE `branchs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `address_id` (`addressId`);
+  ADD KEY `address_id` (`addressesId`);
 
 --
 -- Indexes for table `customers`
@@ -7778,7 +7778,7 @@ ALTER TABLE `branchs`
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
   ADD KEY `nama` (`nama`),
-  ADD KEY `address_id` (`addressId`),
+  ADD KEY `address_id` (`addressesId`),
   ADD KEY `telepon` (`telepon`);
 
 --
@@ -7812,7 +7812,7 @@ ALTER TABLE `orders`
   ADD KEY `order_branchID` (`branchsId`),
   ADD KEY `order_sales` (`sales`),
   ADD KEY `order_packageID` (`packagesId`),
-  ADD KEY `order_addressID` (`addressId`),
+  ADD KEY `order_addressID` (`addressesId`),
   ADD KEY `order_customerID` (`customersId`) USING BTREE,
   ADD KEY `order_closer` (`closer`),
   ADD KEY `kode` (`kode`);
@@ -7851,7 +7851,7 @@ ALTER TABLE `shippings`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `address` (`addressId`);
+  ADD KEY `address` (`addressesId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -7959,13 +7959,13 @@ ALTER TABLE `angsurans`
 -- Constraints for table `branchs`
 --
 ALTER TABLE `branchs`
-  ADD CONSTRAINT `address_id` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
+  ADD CONSTRAINT `address_id` FOREIGN KEY (`addressesId`) REFERENCES `addresses` (`id`);
 
 --
 -- Constraints for table `customers`
 --
 ALTER TABLE `customers`
-  ADD CONSTRAINT `addressID` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
+  ADD CONSTRAINT `addressID` FOREIGN KEY (`addressesId`) REFERENCES `addresses` (`id`);
 
 --
 -- Constraints for table `kabupatens`
@@ -7989,7 +7989,7 @@ ALTER TABLE `kode_pos`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `order_addressID` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`),
+  ADD CONSTRAINT `order_addressID` FOREIGN KEY (`addressesId`) REFERENCES `addresses` (`id`),
   ADD CONSTRAINT `order_branchID` FOREIGN KEY (`branchsId`) REFERENCES `branchs` (`id`),
   ADD CONSTRAINT `order_closer` FOREIGN KEY (`closer`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `order_custID` FOREIGN KEY (`customersId`) REFERENCES `customers` (`id`),
@@ -8012,7 +8012,7 @@ ALTER TABLE `shippings`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `address` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`);
+  ADD CONSTRAINT `address` FOREIGN KEY (`addressesId`) REFERENCES `addresses` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
