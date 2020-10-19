@@ -7,9 +7,9 @@ module.exports = {
     try{
       const branchs = await branch.findAll({
         attributes: {
-          exclude: 'addressId'
+          exclude: 'addressesId'
         },
-        include: 'address'
+        include: 'addresses'
       })
       const data = pagination(branchs, {...req.query})
       return successResponses[200](res, {data})

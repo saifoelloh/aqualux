@@ -3,7 +3,7 @@ const DatabaseConnection = require('../../config/database')
 const orders = require('../order/model')
 
 const branchs = DatabaseConnection.define('branchs', {
-  addressId: DataTypes.INTEGER,
+  addressesId: DataTypes.INTEGER,
   nama: DataTypes.STRING,
 })
 

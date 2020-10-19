@@ -6,9 +6,9 @@ module.exports = {
     try{
       const users = await user.findAll({
         attributes: {
-          exclude: 'addressId'
+          exclude: 'addressesId'
         },
-        include: 'address'
+        include: 'addresses'
       })
       const data = pagination(users, {...req.query})
       return successResponses[200](res, {data})

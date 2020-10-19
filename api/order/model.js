@@ -21,7 +21,7 @@ const orders = DatabaseConnection.define('orders', {
   // sales: {
   //   type: DataTypes.INTEGER,
   //   references: {
-  //     model: 'sales',
+  //     model: 'users',
   //     key: 'id',
   //   },
   //   onDelete: 'CASCADE',
@@ -29,7 +29,7 @@ const orders = DatabaseConnection.define('orders', {
   // closer: {
   //   type: DataTypes.INTEGER,
   //   references: {
-  //     model: 'closers',
+  //     model: 'users',
   //     key: 'id',
   //   },
   //   onDelete: 'CASCADE',

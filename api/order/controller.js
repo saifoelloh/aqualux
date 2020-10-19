@@ -6,9 +6,9 @@ module.exports = {
     try{
       const orders = await order.findAll({
         attributes: {
-          exclude: ['customersId', 'branchsId', 'packagesId','addressId'],
+          exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
         },
-        include: ['customers','branchs','packages','addresses'],
+        include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
       })
       const data = pagination(orders,{...req.query})
       return successResponses[200](res, {data})

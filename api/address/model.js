@@ -14,31 +14,31 @@ const address = DatabaseConnection.define('addresses', {
 })
 
 address.hasOne(customers, {
-  foreignKey: 'addressId',
+  foreignKey: 'addressesId',
   as: 'customers',
 })
 
-customers.belongsTo(address, {as: 'address'})
+customers.belongsTo(address, {as: 'addresses'})
 
 address.hasOne(branchs, {
-  foreignKey: 'addressId',
+  foreignKey: 'addressesId',
   as: 'branchs',
 })
 
-branchs.belongsTo(address, {as: 'address'})
+branchs.belongsTo(address, {as: 'addresses'})
 
 address.hasOne(orders, {
-  foreignKey: 'addressId',
+  foreignKey: 'addressesId',
   as: 'orders',
 })
 
 orders.belongsTo(address, {as:'addresses'})
 
 address.hasOne(users, {
-  foreignKey: 'addressId',
+  foreignKey: 'addressesId',
   as: 'users',
 })
 
-users.belongsTo(address, {as: 'address'})
+users.belongsTo(address, {as: 'addresses'})
 
 module.exports = address
