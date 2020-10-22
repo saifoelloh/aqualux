@@ -1,17 +1,45 @@
 const kabupaten = require('./model')
-const { successResponses, errorResponses, pagination } = require('../../utils')
+const { successResponses, errorResponses } = require('../../utils')
+const { Sequelize } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 20,
+      page = 0,
+      orderBy = 'nama',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const kabupatens = await kabupaten.findAll({
+      let kabupatens = await kabupaten.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes: {
           exclude: 'provinsiId'
         },
         include: 'provinsi'
       })
-      const data = pagination(kabupatens, {...req.query})
-      return successResponses[200](res, {data})
+
+      if(search != ''){
+        kabupatens = await DatabaseConnection.query(
+          `SELECT * FROM kabupatens WHERE MATCH(nama) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: kabupaten,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+
+      return successResponses[200](res, {data: kabupatens})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }
