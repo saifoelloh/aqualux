@@ -1,18 +1,46 @@
 
 const branch = require('./model')
 const { successResponses, errorResponses, pagination } = require('../../utils')
+const { Sequelize } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 10,
+      page = 0,
+      orderBy = 'nama',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const branchs = await branch.findAll({
+      let branchs = await branch.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes: {
           exclude: 'addressesId'
         },
         include: 'addresses'
       })
-      const data = pagination(branchs, {...req.query})
-      return successResponses[200](res, {data})
+      
+      if(search != ''){
+        branchs = await DatabaseConnection.query(
+          `SELECT * FROM branchs WHERE MATCH(nama) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: branch,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+
+      return successResponses[200](res, {data: branchs})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }

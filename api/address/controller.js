@@ -1,17 +1,45 @@
 const address = require('./model')
 const { successResponses, errorResponses, pagination } = require('../../utils')
+const { Sequelize } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 10,
+      page = 0,
+      orderBy = 'jalan',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const addresses = await address.findAll({
+      let addresses = await address.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes: {
           exclude: ['provinsiId','kabupatenId','kecamatanId','kodeposId','kodePosId']
         },
         include: ['provinsi','kabupaten','kecamatan','kode_pos']
       })
-      const data = pagination(addresses, {...req.query})
-      return successResponses[200](res, {data})
+      
+      if(search != ''){
+        addresses = await DatabaseConnection.query(
+          `SELECT * FROM addresses WHERE MATCH(jalan) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: address,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+
+      return successResponses[200](res, {data: addresses})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }

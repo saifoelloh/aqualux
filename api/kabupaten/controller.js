@@ -7,7 +7,7 @@ module.exports = {
   getAll: async(req, res) => {
     const {
       search = '',
-      show = 20,
+      show = 10,
       page = 0,
       orderBy = 'nama',
       sortBy = 'ASC',

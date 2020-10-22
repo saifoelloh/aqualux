@@ -1,17 +1,45 @@
 const order = require('./model')
 const {successResponses, errorResponses, pagination} = require('../../utils')
+const { Sequelize } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 10,
+      page = 0,
+      orderBy = 'kode',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const orders = await order.findAll({
+      let orders = await order.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes: {
           exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
         },
         include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
       })
-      const data = pagination(orders,{...req.query})
-      return successResponses[200](res, {data})
+
+      if(search != ''){
+        orders = await DatabaseConnection.query(
+          `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: order,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+
+      return successResponses[200](res, {data: orders})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }

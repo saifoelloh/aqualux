@@ -3,15 +3,41 @@ const { successResponses, errorResponses, pagination } = require('../../utils')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 10,
+      page = 0,
+      orderBy = 'tanggal',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const angsurans = await angsuran.findAll({
+      let angsurans = await angsuran.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes : {
           exclude: ['orderconfirmationsId','orderConfirmationsId','usersId']
         },
         include: ['order_confirmations','users'],
       })
-      const data = pagination(angsurans, {...req.query})
-      return successResponses[200](res, {data})
+
+      if(search != ''){
+        angsurans = await DatabaseConnection.query(
+          `SELECT * FROM angsurans WHERE MATCH(tanggal) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: angsuran,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+      
+      return successResponses[200](res, {data: orders})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }
