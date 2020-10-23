@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 20, 2020 at 12:46 AM
+-- Generation Time: Oct 23, 2020 at 08:13 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -651,7 +651,7 @@ CREATE TABLE `kecamatans` (
 --
 
 INSERT INTO `kecamatans` (`id`, `kabupatenId`, `nama`, `createdAt`, `updatedAt`) VALUES
-(1101010, 1101, ' Teupah Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
+(1101010, 1101, 'Teupah Selatan', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1101020, 1101, ' Simeulue Timur', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1101021, 1101, ' Teupah Barat', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
 (1101022, 1101, ' Teupah Tengah', '2020-10-05 19:30:46', '2020-10-05 19:30:46'),
@@ -7755,6 +7755,7 @@ ALTER TABLE `addresses`
   ADD KEY `address_kabID` (`kabupatenId`),
   ADD KEY `address_kecID` (`kecamatanId`),
   ADD KEY `address_posID` (`kodeposId`);
+ALTER TABLE `addresses` ADD FULLTEXT KEY `jalan` (`jalan`);
 
 --
 -- Indexes for table `angsurans`
@@ -7771,31 +7772,33 @@ ALTER TABLE `angsurans`
 ALTER TABLE `branchs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `address_id` (`addressesId`);
+ALTER TABLE `branchs` ADD FULLTEXT KEY `nama` (`nama`);
 
 --
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `nama` (`nama`),
-  ADD KEY `address_id` (`addressesId`),
-  ADD KEY `telepon` (`telepon`);
+  ADD KEY `address_id` (`addressesId`);
+ALTER TABLE `customers` ADD FULLTEXT KEY `nama` (`nama`);
+ALTER TABLE `customers` ADD FULLTEXT KEY `email` (`email`);
+ALTER TABLE `customers` ADD FULLTEXT KEY `telepon` (`telepon`);
 
 --
 -- Indexes for table `kabupatens`
 --
 ALTER TABLE `kabupatens`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `kab_provID` (`provinsiId`),
-  ADD KEY `nama` (`nama`);
+  ADD KEY `kab_provID` (`provinsiId`);
+ALTER TABLE `kabupatens` ADD FULLTEXT KEY `nama` (`nama`);
 
 --
 -- Indexes for table `kecamatans`
 --
 ALTER TABLE `kecamatans`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `kec_kabID` (`kabupatenId`),
-  ADD KEY `nama` (`nama`);
+  ADD KEY `kec_kabID` (`kabupatenId`);
+ALTER TABLE `kecamatans` ADD FULLTEXT KEY `nama` (`nama`);
 
 --
 -- Indexes for table `kode_pos`
@@ -7814,8 +7817,8 @@ ALTER TABLE `orders`
   ADD KEY `order_packageID` (`packagesId`),
   ADD KEY `order_addressID` (`addressesId`),
   ADD KEY `order_customerID` (`customersId`) USING BTREE,
-  ADD KEY `order_closer` (`closer`),
-  ADD KEY `kode` (`kode`);
+  ADD KEY `order_closer` (`closer`);
+ALTER TABLE `orders` ADD FULLTEXT KEY `kode` (`kode`);
 
 --
 -- Indexes for table `order_confirmations`
@@ -7829,13 +7832,14 @@ ALTER TABLE `order_confirmations`
 --
 ALTER TABLE `packages`
   ADD PRIMARY KEY (`id`);
+ALTER TABLE `packages` ADD FULLTEXT KEY `nama` (`nama`);
 
 --
 -- Indexes for table `provinses`
 --
 ALTER TABLE `provinses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `nama` (`nama`);
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `provinses` ADD FULLTEXT KEY `nama` (`nama`);
 
 --
 -- Indexes for table `shippings`
@@ -7843,8 +7847,8 @@ ALTER TABLE `provinses`
 ALTER TABLE `shippings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `shipping_orderID` (`ordersId`),
-  ADD KEY `jadwal` (`jadwal`),
-  ADD KEY `surat_jalan` (`surat_jalan`);
+  ADD KEY `jadwal` (`jadwal`);
+ALTER TABLE `shippings` ADD FULLTEXT KEY `surat_jalan` (`surat_jalan`);
 
 --
 -- Indexes for table `users`
