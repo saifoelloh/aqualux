@@ -24,7 +24,7 @@ module.exports = {
         include: 'kabupaten'
       })
       
-      if(search != ''){
+       if(search != ''){
         kecamatans = await DatabaseConnection.query(
           `SELECT * FROM kecamatans WHERE MATCH(nama) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
           {

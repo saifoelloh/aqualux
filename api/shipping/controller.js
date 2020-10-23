@@ -1,17 +1,46 @@
 const package = require('./model')
 const { successResponses, errorResponses, pagination } = require('../../utils')
+const { Sequelize } = require('sequelize')
+const DatabaseConnection = require('../../config/database')
+const shipping = require('./model')
 
 module.exports = {
   getAll: async(req, res) => {
+    const {
+      search = '',
+      show = 10,
+      page = 0,
+      orderBy = 'surat_jalan',
+      sortBy = 'ASC',
+    } = req.query
+
     try{
-      const packages = await package.findAll({
+      let shippings = await package.findAll({
+        order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        offset: show * page,
+        limit: show,
         attributes: {
           exclude: ['ordersId'],
         },
         include: 'orders'
       })
-      const data = pagination(packages, {...req.query})
-      return successResponses[200](res, {data})
+
+      if(search != ''){
+        shippings = await DatabaseConnection.query(
+          `SELECT * FROM shippings WHERE MATCH(surat_jalan) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
+          {
+            model: shipping,
+            type: Sequelize.QueryTypes.SELECT,
+            replacements: {
+              keyword: `*${search}*`,
+              page: page * show,
+              show: show,
+            },
+          },
+        )
+      }
+
+      return successResponses[200](res, {data: shippings})
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }
