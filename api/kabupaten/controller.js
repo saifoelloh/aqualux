@@ -14,7 +14,7 @@ module.exports = {
     } = req.query
 
     try{
-      let kabupatens = await kabupaten.findAll({
+      let kabupatens = await kabupaten.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,

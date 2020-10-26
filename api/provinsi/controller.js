@@ -1,5 +1,5 @@
 const provinsi = require('./model')
-const { successResponses, errorResponses, pagination } = require('../../utils')
+const { successResponses, errorResponses } = require('../../utils')
 const { Sequelize } = require('sequelize')
 const DatabaseConnection = require('../../config/database')
 
@@ -14,7 +14,7 @@ module.exports = {
     } = req.query
 
     try{
-      let provinses = await provinsi.findAll({
+      let provinses = await provinsi.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,

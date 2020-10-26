@@ -4,7 +4,7 @@ const { successResponses, errorResponses, pagination } = require('../../utils')
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const order_confirmations = await order_confirmation.findAll({
+      const order_confirmations = await order_confirmation.findAndCountAll({
         attributes: {
           exclude: ['ordersId'],
         },

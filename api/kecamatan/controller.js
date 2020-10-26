@@ -15,7 +15,7 @@ module.exports = {
 
     try{
       console.log(parseInt(req.query.show))
-      let kecamatans = await kecamatan.findAll({
+      let kecamatans = await kecamatan.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,

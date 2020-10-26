@@ -15,7 +15,7 @@ module.exports = {
     } = req.query
 
     try{
-      let branchs = await branch.findAll({
+      let branchs = await branch.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,

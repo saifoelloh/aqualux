@@ -4,7 +4,7 @@ const { successResponses, errorResponses, pagination } = require('../../utils')
 module.exports = {
   getAll: async(req, res) => {
     try{
-      const users = await user.findAll({
+      const users = await user.findAndCountAll({
         attributes: {
           exclude: 'addressesId'
         },

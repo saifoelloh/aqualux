@@ -15,7 +15,7 @@ module.exports = {
     } = req.query
 
     try{
-      let shippings = await package.findAll({
+      let shippings = await package.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,

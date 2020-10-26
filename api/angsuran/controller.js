@@ -12,7 +12,7 @@ module.exports = {
     } = req.query
 
     try{
-      let angsurans = await angsuran.findAll({
+      let angsurans = await angsuran.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,
