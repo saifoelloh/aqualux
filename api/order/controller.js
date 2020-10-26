@@ -38,6 +38,7 @@ module.exports = {
             },
           },
         )
+        orders = await order.findAndCountAll()
       }
 
       return successResponses[200](res, {data: orders})
