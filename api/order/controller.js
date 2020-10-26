@@ -6,7 +6,7 @@ const DatabaseConnection = require('../../config/database')
 module.exports = {
   getAll: async(req, res) => {
     const {
-      search,
+      search = '',
       show = 10,
       page = 0,
       orderBy = 'kode',
@@ -14,20 +14,7 @@ module.exports = {
     } = req.query
 
     try{
-      let orders = await DatabaseConnection.query(
-        `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
-        {
-          model: order,
-          type: Sequelize.QueryTypes.SELECT,
-          replacements: {
-            keyword: `*${search}*`,
-            page: page * show,
-            show,
-          },
-        },
-      )
-      
-      orders = await order.findAndCountAll({
+      let orders = await order.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
         limit: show,
@@ -36,6 +23,22 @@ module.exports = {
         },
         include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
       })
+
+      if(search != ''){
+        orders = await DatabaseConnection.query(	
+          `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,	
+          {	
+            model: order,	
+            mapToModel: true,
+            type: Sequelize.QueryTypes.SELECT,	
+            replacements: {	
+              keyword: `*${search}*`,	
+              page: page * show,	
+              show,	
+            },	
+          },          	
+        )	
+      }
 
       return successResponses[200](res, {data: orders})
     }catch(err){
