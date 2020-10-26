@@ -14,7 +14,10 @@ module.exports = Object.entries(responses).reduce((acc, cur) => {
           code: current['code'],
           success: current['success'],
         },
-        payload: data,
+        payload: {
+          total: data.length,
+          data
+        },
       })
     return accumulator
   }, {})
