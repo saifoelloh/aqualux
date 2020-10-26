@@ -38,7 +38,15 @@ module.exports = {
             },
           },
         )
-        orders = await order.findAndCountAll()
+        orders = await order.findAndCountAll({
+          order: Sequelize.literal(`${orderBy} ${sortBy}`),
+          offset: show * page,
+          limit: show,
+          attributes: {
+            exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+          },
+          include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
+        })
       }
 
       return successResponses[200](res, {data: orders})
