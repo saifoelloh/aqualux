@@ -13,19 +13,9 @@ module.exports = {
       sortBy = 'ASC',
     } = req.query
 
-    try{
-      let orders = await order.findAndCountAll({
-        order: Sequelize.literal(`${orderBy} ${sortBy}`),
-        offset: show * page,
-        limit: show,
-        attributes: {
-          exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
-        },
-        include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
-      })
-
-      if(search != ''){
-        orders = await DatabaseConnection.query(	
+    try{  
+      if(search!=''){
+        let x = await DatabaseConnection.query(	
           `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,	
           {	
             model: order,	
@@ -36,11 +26,38 @@ module.exports = {
               page: page * show,	
               show,	
             },	
-          },          	
-        )	
-      }
+          },
+        )
 
-      return successResponses[200](res, {data: orders})
+        if(x==''){
+          return successResponses[200](res, {data: []})
+        }else{
+         let orders = await order.findAndCountAll({
+            order: Sequelize.literal(`${orderBy} ${sortBy}`),
+            offset: show * page,
+            limit: show,
+            attributes: {
+              exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+            },
+            include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
+          })
+
+          return successResponses[200](res, {data: orders})
+        }
+      }else{
+        let orders = await order.findAndCountAll({
+          order: Sequelize.literal(`${orderBy} ${sortBy}`),
+          offset: show * page,
+          limit: show,
+          attributes: {
+            exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+          },
+          include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
+        })
+
+        return successResponses[200](res, {data: orders})
+      }      
+      
     }catch(err){
       return errorResponses[400](res, {message: err.message})
     }
