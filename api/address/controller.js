@@ -37,6 +37,7 @@ module.exports = {
             },
           },
         )
+        addresses = addresses = await address.findAndCountAll()
       }
 
       return successResponses[200](res, {data: addresses})

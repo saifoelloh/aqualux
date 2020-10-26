@@ -41,6 +41,7 @@ module.exports = {
             },
           },
         )
+        customers = await customer.findAndCountAll()
       }
 
       return successResponses[200](res, {data: customers})

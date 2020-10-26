@@ -38,6 +38,7 @@ module.exports = {
             },
           },
         )
+        shippings = await package.findAndCountAll()
       }
 
       return successResponses[200](res, {data: shippings})
