@@ -14,6 +14,7 @@ module.exports = {
     } = req.query
 
     try{
+      console.log(parseInt(req.query.show))
       let kecamatans = await kecamatan.findAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
         offset: show * page,
@@ -23,6 +24,7 @@ module.exports = {
         },
         include: 'kabupaten'
       })
+      
       
        if(search != ''){
         kecamatans = await DatabaseConnection.query(

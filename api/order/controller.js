@@ -25,6 +25,7 @@ module.exports = {
       })
 
       if(search != ''){
+        console.log("nilai SHOW : " + parseInt(show))
         orders = await DatabaseConnection.query(
           `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
           {
@@ -33,7 +34,7 @@ module.exports = {
             replacements: {
               keyword: `*${search}*`,
               page: page * show,
-              show: show,
+              show,
             },
           },
         )

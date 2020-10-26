@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+const queryParser = require('express-query-int');
 const DataBaseConnection = require('./config/database')
 const { APP_PORT } = process.env
 const app = express()
@@ -36,6 +37,7 @@ app
   .use(cors())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
+  .use(queryParser())
   .use('/api/customer', customerRouter)
   .use('/api/order', orderRouter)
   .use('/api/branch', branchRouter)
