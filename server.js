@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
-const queryParser = require('express-query-int');
+const queryParser = require('express-query-int')
 const DataBaseConnection = require('./config/database')
 const { APP_PORT } = process.env
 const app = express()
@@ -34,7 +34,7 @@ DataBaseConnection.authenticate()
 
 app
   .use(logger('dev'))
-  .use(cors())
+  .use('*', cors())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(queryParser())
