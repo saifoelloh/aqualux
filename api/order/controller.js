@@ -90,8 +90,13 @@ module.exports = {
       const data = await order.findOne({
         where: {
           id: req.params.id
-        }
+        },
+        attributes: {
+          exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+        },
+        include: ['customers','branchs','packages','addresses','adminSales','adminCloser']
       })
+
       if(data!=null){
         res.send(successResponses[200](res, {data}))
       }else{
