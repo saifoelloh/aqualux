@@ -123,4 +123,29 @@ module.exports = {
       return errorResponses[400](res, {message:err.message})
     }
   },
+
+  getByUser: async(req, res) => {
+    try{
+      const data = await order.findAll({
+        where: {
+          sales: req.params.id
+        }
+      })
+
+      if(data!=null){
+        let orders = await order.findAndCountAll({
+          attributes: {
+            exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+          },
+          include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
+        })
+
+        return successResponses[200](res, {data: orders})
+      }else{
+        res.send(errorResponses[400](res, {message: 'id not found'}))
+      }
+    }catch(err){
+      return errorResponses[400](res, {message: err.message})
+    }
+  }
 }

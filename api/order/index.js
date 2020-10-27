@@ -10,5 +10,6 @@ orderRouter
     .get('/:id/update', controller.getById)
     .put('/:id', validation(schema), controller.update)
     .delete('/:id/delete', controller.delete)
+    .get('/user/:id', controller.getByUser)
 
 module.exports = orderRouter
