@@ -1,7 +1,7 @@
 {
   "name": "aqualux-api",
   "version": "1.0.0",
-  "description": "simple implementation of express and mysql",
+  "description": "sistem informasi aqualux",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
