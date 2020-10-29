@@ -1,10 +1,10 @@
+const { Op, Sequelize } = require('sequelize')
+
 const order = require('./model')
-const {successResponses, errorResponses, pagination} = require('../../utils')
-const { Sequelize } = require('sequelize')
-const DatabaseConnection = require('../../config/database')
+const { errorResponses, successResponses } = require('../../utils')
 
 module.exports = {
-  getAll: async(req, res) => {
+  getAll: async (req, res) => {
     const {
       search = '',
       show = 10,
@@ -12,98 +12,113 @@ module.exports = {
       orderBy = 'kode',
       sortBy = 'ASC',
     } = req.query
+    const searchBy = { [Op.like]: `%${search}%` }
 
-    try{
-      let orders = await order.findAndCountAll({
+    try {
+      const orders = await order.findAndCountAll({
         order: Sequelize.literal(`${orderBy} ${sortBy}`),
+        where: {
+          [Op.or]: [
+            { kode: searchBy },
+            { tanggal: searchBy },
+            { jenis_marketing: searchBy },
+            { jenis_pembayaran: searchBy },
+            { '$customers.nama$': searchBy },
+            { '$branchs.nama$': searchBy },
+            { '$packages.nama$': searchBy },
+            { '$branchs.nama$': searchBy },
+          ],
+        },
         offset: show * page,
         limit: show,
         attributes: {
-          exclude: ['customersId', 'branchsId', 'packagesId','addressesId','sales','closer'],
+          exclude: [
+            'customersId',
+            'branchsId',
+            'packagesId',
+            'addressesId',
+            'sales',
+            'closer',
+          ],
         },
-        include: ['customers','branchs','packages','addresses','adminSales','adminCloser'],
+        include: [
+          'customers',
+          'branchs',
+          'packages',
+          'addresses',
+          'adminSales',
+          'adminCloser',
+        ],
       })
 
-      if(search != ''){
-        console.log("nilai SHOW : " + parseInt(show))
-        orders = await DatabaseConnection.query(
-          `SELECT * FROM orders WHERE MATCH(kode) AGAINST(:keyword IN BOOLEAN MODE) ORDER BY ${orderBy} ${sortBy} LIMIT :page, :show`,
-          {
-            model: order,
-            type: Sequelize.QueryTypes.SELECT,
-            replacements: {
-              keyword: `*${search}*`,
-              page: page * show,
-              show,
-            },
+      return successResponses[200](res, { data: orders })
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
+    }
+  },
+
+  create: async (req, res) => {
+    try {
+      const data = await order.create({ ...req.body })
+      return successResponses[201](res, { data })
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
+    }
+  },
+
+  update: async (req, res) => {
+    try {
+      const data = await order.update(
+        { ...req.body },
+        {
+          where: {
+            id: req.params.id,
           },
-        )
-      }
-
-      return successResponses[200](res, {data: orders})
-    }catch(err){
-      return errorResponses[400](res, {message: err.message})
+        },
+      )
+      return successResponses[202](res, { data })
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
     }
   },
 
-  create: async(req, res) => {
-    try{
-      const data = await order.create({...req.body})
-      return successResponses[201](res,{data})
-    }catch(err){
-      return errorResponses[400](res, {message: err.message})
-    }
-  },
-
-  update: async(req, res) => {
-    try{
-      const data = await order.update({...req.body},{
-        where: {
-          id: req.params.id
-        }
-      })
-      return successResponses[202](res,{data})
-    }catch(err){
-      return errorResponses[400](res, {message: err.message})
-    }
-  },
-
-  getById: async(req, res) => {
-    try{
+  getById: async (req, res) => {
+    try {
       const data = await order.findOne({
         where: {
-          id: req.params.id
-        }
+          id: req.params.id,
+        },
       })
-      if(data!=null){
-        res.send(successResponses[200](res, {data}))
-      }else{
-        res.send(errorResponses[400](res, {message: 'id not found'}))
+      if (data != null) {
+        res.send(successResponses[200](res, { data }))
+      } else {
+        res.send(errorResponses[400](res, { message: 'id not found' }))
       }
-    }catch(err){
-      return errorResponses[400](res, {message: err.message})
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
     }
   },
 
-  delete: async(req, res) => {
-    try{
+  delete: async (req, res) => {
+    try {
       const cek = await order.findOne({
         where: {
-          id: req.params.id
-        }
+          id: req.params.id,
+        },
       })
-      if(cek!=null){
+      if (cek != null) {
         const data = await order.destroy({
           where: {
-            id: req.params.id
-          }
+            id: req.params.id,
+          },
         })
-        res.send(successResponses[200](res, {data}))
-      }else{
-        res.send(errorResponses[400](res, {message: 'id not found'}))
+        res.send(successResponses[200](res, { data }))
+      } else {
+        res.send(errorResponses[400](res, { message: 'id not found' }))
       }
-    }catch(err){
-      return errorResponses[400](res, {message:err.message})
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
     }
   },
 }
+
