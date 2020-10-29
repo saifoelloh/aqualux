@@ -60,6 +60,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       const data = await order.create({ ...req.body })
+      res.io.emit('order', { data })
       return successResponses[201](res, { data })
     } catch (err) {
       return errorResponses[400](res, { message: err.message })
@@ -115,6 +116,44 @@ module.exports = {
         res.send(successResponses[200](res, { data }))
       } else {
         res.send(errorResponses[400](res, { message: 'id not found' }))
+      }
+    } catch (err) {
+      return errorResponses[400](res, { message: err.message })
+    }
+  },
+
+  getByUser: async (req, res) => {
+    try {
+      const data = await order.findAll({
+        where: {
+          sales: req.params.id,
+        },
+      })
+
+      if (data != null) {
+        const orders = await order.findAndCountAll({
+          attributes: {
+            exclude: [
+              'customersId',
+              'branchsId',
+              'packagesId',
+              'addressesId',
+              'sales',
+              'closer',
+            ],
+          },
+          include: [
+            'customers',
+            'branchs',
+            'packages',
+            'addresses',
+            'adminSales',
+            'adminCloser',
+          ],
+        })
+        return successResponses[200](res, { data: orders })
+      } else {
+        return errorResponses[400](res, { message: 'id not found' })
       }
     } catch (err) {
       return errorResponses[400](res, { message: err.message })

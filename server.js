@@ -1,26 +1,30 @@
-const express = require('express')
-const cors = require('cors')
 const bodyParser = require('body-parser')
-const logger = require('morgan')
+const cors = require('cors')
+const express = require('express')
 const queryParser = require('express-query-int')
-const DataBaseConnection = require('./config/database')
-const { APP_PORT } = process.env
-const app = express()
+const logger = require('morgan')
 
-// api
-const customerRouter = require('./api/customer')
-const orderRouter = require('./api/order')
-const branchRouter = require('./api/branch')
-const packageRouter = require('./api/package')
-const shippingRouter = require('./api/shipping')
-const order_confirmationRouter = require('./api/order_confirmation')
-const angsuranRouter = require('./api/angsuran')
-const userRouter = require('./api/user')
 const addressRouter = require('./api/address')
-const provinsiRouter = require('./api/provinsi')
+const angsuranRouter = require('./api/angsuran')
+const branchRouter = require('./api/branch')
+const customerRouter = require('./api/customer')
+const DataBaseConnection = require('./config/database')
 const kabupatenRouter = require('./api/kabupaten')
 const kecamatanRouter = require('./api/kecamatan')
 const kode_posRouter = require('./api/kode_pos')
+const orderRouter = require('./api/order')
+const order_confirmationRouter = require('./api/order_confirmation')
+const packageRouter = require('./api/package')
+const provinsiRouter = require('./api/provinsi')
+const shippingRouter = require('./api/shipping')
+const userRouter = require('./api/user')
+const { APP_PORT } = process.env
+const app = express()
+
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+
+// api
 
 require('dotenv').config()
 
@@ -34,10 +38,14 @@ DataBaseConnection.authenticate()
 
 app
   .use(logger('dev'))
-  .use('*', cors())
+  .use(cors())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(queryParser())
+  .use((_, res, next) => {
+    res.io = io
+    next()
+  })
   .use('/api/customer', customerRouter)
   .use('/api/order', orderRouter)
   .use('/api/branch', branchRouter)
@@ -51,6 +59,8 @@ app
   .use('/api/kabupaten', kabupatenRouter)
   .use('/api/kecamatan', kecamatanRouter)
   .use('/api/kode_pos', kode_posRouter)
-  .listen(APP_PORT, () =>
-    console.log(`Your app listening to port ${APP_PORT}`),
-  )
+
+server.listen(APP_PORT, () => {
+  console.clear()
+  console.log(`Listening to port ${APP_PORT}`)
+})
