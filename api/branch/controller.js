@@ -38,6 +38,7 @@ module.exports = {
             },
           },
         )
+        branchs = await branch.findAndCountAll()
       }
 
       return successResponses[200](res, {data: branchs})

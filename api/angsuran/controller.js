@@ -35,6 +35,7 @@ module.exports = {
             },
           },
         )
+        angsurans = angsurans = await angsuran.findAndCountAll()
       }
       
       return successResponses[200](res, {data: orders})

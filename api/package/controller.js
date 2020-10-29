@@ -33,6 +33,7 @@ module.exports = {
             },
           },
         )
+        packages = await package.findAndCountAll()
       }
 
       return successResponses[200](res, {data: packages})
